@@ -14,4 +14,5 @@
    * Gaissian Weight function: the weight is 1 when the distance is 0, the weight is always larger than 0, so it is always be able to make predictions.
    
 4. cross_validation.py
- * Using cross validation to test a model. In this code, the model is KNN(un-weighted and weighted)
+ * Using cross validation to test a model. In this code, the model is KNN(un-weighted and weighted).
+ * With the help of cross validation, we can tune the parameters of the model to see which set of parameters give better results without getting overfit.
