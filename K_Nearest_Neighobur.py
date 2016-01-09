@@ -60,7 +60,7 @@ def get_weightedKNN(training_data, new_data, distance_f = euclidean.euclidean, k
         avge += weight*training_data[idx]['price']
         total_weight += weight
         
-    avge = avge/total_weight
+    avge = avge/(1+total_weight)
     return avge
 
 
@@ -74,8 +74,9 @@ def main():
     
     # KNN with weight
     print 'weighted KNN using Gaussian function'
-    print get_weightedKNN(training_data, (9, 2, 12))
-    print get_weightedKNN(training_data, (9, 2, 12), weight_f = gaussian_weight)
+    print 'Gaussian Weight Function: ', get_weightedKNN(training_data, (9, 2, 12))
+    print 'Inverse Weight Function: ', get_weightedKNN(training_data, (9, 2, 12), weight_f = inverse_weight)
+    print 'Subtract Weight Function: ', get_weightedKNN(training_data, (9, 2, 12), weight_f = subtract_weight)
     
 if __name__ == '__main__':
     main()
