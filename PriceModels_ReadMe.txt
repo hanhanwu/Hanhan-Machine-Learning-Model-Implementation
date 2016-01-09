@@ -12,3 +12,6 @@
    * Inverse Weight function: fast and easy to implement, but overweight close items which makes the algorithm more sensite to the noise.
    * Subtraction Weight function: won't overweight close items, but the weight will finally drop to 0. In some cases this cannot help make prediction at all, since there is nothing close enough to be ocnsidered as neighbors, then both the weight and the average will be 0.
    * Gaissian Weight function: the weight is 1 when the distance is 0, the weight is always larger than 0, so it is always be able to make predictions.
+   
+4. cross_validation.py
+ * Using cross validation to test a model. In this code, the model is KNN(un-weighted and weighted)
