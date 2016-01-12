@@ -20,3 +20,4 @@
  
 5. optimization_alg.py
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
+ * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
