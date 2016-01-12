@@ -43,6 +43,23 @@ def get_stockset():
         stocks.append({'input': (rating, age, duration), 'price': price})
         
     return stocks
+
+# when the range of each attribute varies significantly
+def get_stockset_various():
+    # randomly create 500 stocks
+    for i in range(500):
+        rating = randint(1, 10)
+        age = randint(1, 20)
+        duration = randint(1, 50)
+        investment = randint(10000, 10000000)
+        
+        price = get_stock_price(rating, age, duration, investment)
+        # add some noise
+        price *= (random()*0.4 + 0.8)
+        
+        stocks.append({'input': (rating, age, duration, investment), 'price': price})
+        
+    return stocks
     
 
 def main():
