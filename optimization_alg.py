@@ -22,8 +22,8 @@ def annealing_opt(domain, costf, T = 10000.0, cool = 0.95, step = 1):
     while T > 0.1:
         vec_new = vec
         vec_new[i] += dir
-        if vec_new[i][0] < vec[i][0]: vec_new[i][0] = vec[i][0]
-        elif vec_new[i][1] > vec[i][1]: vec_new[i][1] = vec[i][1]
+        if vec_new[i] < domain[i][0]: vec_new[i] = domain[i][0]
+        elif vec_new[i] > domain[i][1]: vec_new[i] = domain[i][1]
         error_old = costf(vec)
         error_new = costf(vec_new)
         p = pow(math.e, (-error_new-error_old)/T)
