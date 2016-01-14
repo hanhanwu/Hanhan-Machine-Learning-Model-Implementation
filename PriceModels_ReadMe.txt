@@ -1,5 +1,7 @@
 1. mock_Chinese_stock_price.py
   * In this file, the 500 generated stock price will be the dataset used in models
+  * get_stockset() returns data set with less attribute, and the range between each attribute does not vary too much
+  * get_stockset_various() has added more attributes, some maybe useless attribute and some may have very huge values
   
 2. euclidean_distance.py
  * Calculate the euclidean distance between 2 vectors. Each vector represents the attrobutes of each item. The 2 vectors must have same attributes
@@ -21,3 +23,7 @@
 5. optimization_alg.py
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
  * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
+ 
+6. rescale_and_normalization.py
+ * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
+ * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
