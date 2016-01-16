@@ -23,6 +23,7 @@
 5. optimization_alg.py
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
  * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
+ * The cost function is used to decide whether to update to the new feature vector in each step of optimization loop. In this code, users have the freedom to decide which algorithm will be used in the cross validation of the cost function.
  
 6. rescale_and_normalization.py
  * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
