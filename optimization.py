@@ -15,7 +15,6 @@ import cross_validation
 import KNN
 import numpy as np
 
-
 # annealing optimization
 # domain if the value range for each attribute
 def annealing_opt(domain, costf, T = 10000.0, cool = 0.95, step = 5):
@@ -100,22 +99,29 @@ def genetic_optimization(domain, costf, generations_num=100, population_size=50,
         
 
 # return the cost function
-def generatecostf(scale, data, algr, trails):
+def generatecostf(data, algr, trails):
     def costf(scale):
-        rescaled_data = heterogeneous_data.rescale(data, scale)
-        cost = cross_validation.cross_validate(data, algr, trails)
+        rescaled_data = rescale(data, scale)
+        cost = cross_validation.cross_validate(rescaled_data, algr, trails)
         return cost
     return costf
 
+def rescale(data_set, scale):
+    scaled_data = []
+    for row in data_set:
+        scaled_input = [row['input'][i]*scale[i] for i in range(len(scale))]
+        scaled_data.append({'input': scaled_input, 'price': row['price']})
+    return scaled_data
+
 
 def main():
-    scale = [10, 10, 0.00001, 0]
-    heterogeneous_data, min_max = mock_Chinese_stock_price.get_stockset_various()
-    costf = generatecostf(scale, heterogeneous_data, algr=KNN.get_KNN, trails=10)
-#     annealing_optimized_result = annealing_opt(min_max, costf)
-#     print 'using annealing optimizaton: [rating, age, duration, investment, employee_number]', annealing_optimized_result
+    domain = [(0,10)]*5
+    data= mock_Chinese_stock_price.get_stockset_various()
+    costf = generatecostf(data, algr=KNN.get_KNN, trails=10)
+    annealing_optimized_result = annealing_opt(domain, costf)
+    print 'using annealing optimizaton: [rating, age, duration, investment, employee_number]', annealing_optimized_result
     
-    genetic_optimized_resule = genetic_optimization(min_max, costf)
+    genetic_optimized_resule = genetic_optimization(domain, costf)
     print 'using genetic optimizaton: [rating, age, duration, investment, employee_number]', genetic_optimized_result
     
 if __name__ == '__main__':
