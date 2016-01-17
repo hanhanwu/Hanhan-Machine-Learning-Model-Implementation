@@ -23,7 +23,7 @@ def normalization(data_set, min_max):
 
 def main():
     # when the attributes have different data range
-    heterogeneous_data, min_max = mock_Chinese_stock_price.get_stockset_various()
+    heterogeneous_data = mock_Chinese_stock_price.get_stockset_various()
     
     # in this dataset, I have added investment, and employee number, 
     # they all have large numbers and will influence the results significantly without normalization, 
@@ -43,6 +43,7 @@ def main():
     print 'cross validation, using weighted KNN: ', scaled_cv_total_error_weighted
     
     print 'after normalization'
+    min_max = [(1,10), (1,20), (1,50), (10000, 10000000)]
     normalized_data = normalization(heterogeneous_data, min_max)
     normalized_cv_total_error_unweighted = cross_validation.cross_validate(normalized_data, algr = KNN.get_KNN, trails=100)
     normalized_cv_total_error_weighted = cross_validation.cross_validate(normalized_data, algr = KNN.get_weightedKNN, trails=100)
