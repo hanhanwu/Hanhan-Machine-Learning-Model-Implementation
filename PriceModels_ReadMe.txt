@@ -6,7 +6,7 @@
 2. euclidean_distance.py
  * Calculate the euclidean distance between 2 vectors. Each vector represents the attrobutes of each item. The 2 vectors must have same attributes
  
-3. K_Nearest_Neighobur.py
+3. KNN.py
  * Find top k similar items for a new item. 
  * Un-weighted KNN using euclidean distance by default.
  * Weighted KNN using gaussian function as defaust weight function.
@@ -20,7 +20,7 @@
  * With the help of cross validation, we can tune the parameters of the model to see which set of parameters give better results without getting overfit.
  * Note: when dividing the data in cross validation here, I think using percentage instead of folds to divide is better. Because using folds will have the limitation for the number of folds, depends on the size of the dataset. Therefore, larger folds will become uncessary since it will repeat previous tests. Using percentages with random() seldom get repeated tests and allows more times tests.
  
-5. optimization_alg.py
+5. optimization.py
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
  * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
  * The cost function is used to decide whether to update to the new feature vector in each step of optimization loop. In this code, users have the freedom to decide which algorithm will be used in the cross validation of the cost function.
@@ -28,6 +28,6 @@
  * genetic optimization algorithm, it mimics the nature and try to optimize each generation by selection the top elites and use them to do mutation/crossover to form the rest of new solutions and bring all these together into the next generatino. So it assumes that each generation has the same amount of population.
  * I think genetic algorithm is very interesting. I am outputing the average score and the best score for each genration, they are not in decreasing or ascending order. Looks like philosophy.
  
-6. rescale_and_normalization.py
+6. heterogeneous_data.py
  * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
  * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
