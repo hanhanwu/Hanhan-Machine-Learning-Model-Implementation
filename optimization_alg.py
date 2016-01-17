@@ -14,7 +14,7 @@ import mock_Chinese_stock_price
 import cross_validation
 import KNN
 
-scale = [10, 10, 0.00001, 0]
+
 
 def annealing_opt(domain, costf, T = 10000.0, cool = 0.95, step = 5):
     # random initialize the Vector
@@ -43,8 +43,10 @@ def annealing_opt(domain, costf, T = 10000.0, cool = 0.95, step = 5):
     
     return vec 
 
+
+
 # return the cost function
-def generatecostf(data, algr, trails):
+def generatecostf(scale, data, algr, trails):
     def costf(scale):
         rescaled_data = heterogeneous_data.rescale(data, scale)
         cost = cross_validation.cross_validate(data, algr, trails)
@@ -53,8 +55,9 @@ def generatecostf(data, algr, trails):
 
 
 def main():
+    scale_annealing = [10, 10, 0.00001, 0]
     heterogeneous_data, min_max = mock_Chinese_stock_price.get_stockset_various()
-    costf = generatecostf(heterogeneous_data, algr=KNN.get_KNN, trails=10)
+    costf = generatecostf(scale_annealing, heterogeneous_data, algr=KNN.get_KNN, trails=10)
     annealing_optimized_result = annealing_opt(min_max, costf)
     print 'using annealing optimizaton: [rating, age, duration, investment, employee_number]', annealing_optimized_result
     
