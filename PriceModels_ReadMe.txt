@@ -20,7 +20,7 @@
  * With the help of cross validation, we can tune the parameters of the model to see which set of parameters give better results without getting overfit.
  * Note: when dividing the data in cross validation here, I think using percentage instead of folds to divide is better. Because using folds will have the limitation for the number of folds, depends on the size of the dataset. Therefore, larger folds will become uncessary since it will repeat previous tests. Using percentages with random() seldom get repeated tests and allows more times tests.
  
-5. optimization.py
+5. optimization.py   (Optimization is good because, here you can see which attributes are important immediately)
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
  * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
  * The cost function is used to decide whether to update to the new feature vector in each step of optimization loop. In this code, users have the freedom to decide which algorithm will be used in the cross validation of the cost function.
