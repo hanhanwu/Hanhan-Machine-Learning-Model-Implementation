@@ -25,6 +25,9 @@
  * For problems where finding the precise global optimum is less important than finding an acceptable global optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as brute-force search or gradient descent.
  * The cost function is used to decide whether to update to the new feature vector in each step of optimization loop. In this code, users have the freedom to decide which algorithm will be used in the cross validation of the cost function.
  
+ * genetic optimization algorithm, it mimics the nature and try to optimize each generation by selection the top elites and use them to do mutation/crossover to form the rest of new solutions and bring all these together into the next generatino. So it assumes that each generation has the same amount of population.
+ * I think genetic algorithm is very interesting. I am outputing the average score and the best score for each genration, they are not in decreasing or ascending order. Looks like philosophy.
+ 
 6. rescale_and_normalization.py
  * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
  * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
