@@ -35,7 +35,7 @@ def main():
     print 'cross validation, using weighted KNN: ', cv_total_error_weighted
     
     print 'after re-scale'
-    scale = [10, 10, 0.00001, 0]
+    scale = [10, 10, 10, 0.00001, 0]
     scaled_data = rescale(heterogeneous_data, scale)
     scaled_cv_total_error_unweighted = cross_validation.cross_validate(scaled_data, algr = KNN.get_KNN, trails=100)
     scaled_cv_total_error_weighted = cross_validation.cross_validate(scaled_data, algr = KNN.get_weightedKNN, trails=100)
