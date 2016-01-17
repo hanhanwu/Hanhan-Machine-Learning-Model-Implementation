@@ -28,6 +28,9 @@
  * genetic optimization algorithm, it mimics the nature and try to optimize each generation by selection the top elites and use them to do mutation/crossover to form the rest of new solutions and bring all these together into the next generatino. So it assumes that each generation has the same amount of population.
  * I think genetic algorithm is very interesting. I am outputing the average score and the best score for each genration, they are not in decreasing or ascending order. Looks like philosophy.
  
+Note: In both optimization methods, we are using domain to tell the range of each attribute.
+      In both optimization, I dind't do value check. For example, to check whether the generated age is larger than 0. In practical situation, these checks should be added for different situations.
+ 
 6. heterogeneous_data.py
  * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
  * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
