@@ -5,6 +5,7 @@ Provide probabilities of an item belongs to a given range by analyzing its neigh
 The probability is calculated by using the sum the neighbor weight within the range divided by the total neighbor weight
 Then plot the probability
 accumulative probability: show a probability less than a given value
+probability graph: show actual probabilities for different price points and make the graph smooth
 '''
 import KNN
 import mock_Chinese_stock_price
@@ -38,6 +39,25 @@ def accumulative_plot(data, vec, upperbound, k = 5, weightf = KNN.gaussian_weigh
     plot(t, cprob)
     show()
     
+    
+def probabilitygraph(data, vec, upperbound, k=5, weightf = KNN.gaussian_weight, sigma = 5.0):
+    t = arange(0.0, upperbound, 0.1)
+    points = []
+    
+    # get probabilities for each point
+    probabilities = [prob_guess(data, vec, v, v+0.1, k, weightf) for v in t]
+    
+    # smooth the graph
+    for i in range(len(probabilities)):
+        sv = 0.0
+        for j in range(len(probabilities)):
+            dist = abs(i-j)*0.1
+            weight = KNN.gaussian_weight(dist, sigma)
+            sv += weight*probabilities[j]
+        points.append(sv)
+    plot(t,array(points))
+    show()
+    
 
 def main():
     data = mock_Chinese_stock_price.get_stockset()
@@ -47,6 +67,9 @@ def main():
     
     # plot using accumulative probability
     accumulative_plot(data, (9, 2, 12), 100)
+    
+    # plot using probabilities graph
+    probabilitygraph(data, (9, 2, 12), 100)
 if __name__ == '__main__':
     main()
 
