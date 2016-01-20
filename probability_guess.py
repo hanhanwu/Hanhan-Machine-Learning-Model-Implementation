@@ -40,6 +40,7 @@ def accumulative_plot(data, vec, upperbound, k = 5, weightf = KNN.gaussian_weigh
     show()
     
     
+# sigma indicates how smooth the probabilities will be
 def probabilitygraph(data, vec, upperbound, k=5, weightf = KNN.gaussian_weight, sigma = 5.0):
     t = arange(0.0, upperbound, 0.1)
     points = []
