@@ -38,3 +38,5 @@ Note: In both optimization methods, we are using domain to tell the range of eac
 7. probability_guess.py
  * Telling the probabilities that a new item belongs to each range/category
  * plot the probabilities using Python matplotlib
+  a. cumulative probabilities - shows the probability that the result is under a given upperbound
+  b. probability graph - shows probabilities for different price point in a smooth way. In order to make the graph smooth, the algorithm assumed that the probability at each point is a weighted average of the surrounding probabilities. Using gaussian function to calcualte the weight for each nearby 2 points, their sv will be added up using the weight multiply the probability between these 2 points.
