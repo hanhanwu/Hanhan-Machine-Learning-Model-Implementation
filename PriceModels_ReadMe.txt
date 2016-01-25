@@ -40,3 +40,8 @@ Note: In both optimization methods, we are using domain to tell the range of eac
  * plot the probabilities using Python matplotlib
   a. cumulative probabilities - shows the probability that the result is under a given upperbound
   b. probability graph - shows probabilities for different price point in a smooth way. In order to make the graph smooth, the algorithm assumed that the probability at each point is a weighted average of the surrounding probabilities. Using gaussian function to calcualte the weight for each nearby 2 points, their sv will be added up using the weight multiply the probability between these 2 points.
+  
+8. eBay_test.py, eBay_price_predict.py
+ * get eBay products price as the training data, using the implemented KNN, weighted KNN for price prediction.
+ * eBay_test.py is the one to get the right category id, since using keyword search for eBay products, it will return all the relative products. In this case, instead of just return wine, it also returns other wine products. You can also use the sample code here to help other data filtering work.
+ * In order to get eBay data, need to go to eBay developer web page and apply for application keys.
