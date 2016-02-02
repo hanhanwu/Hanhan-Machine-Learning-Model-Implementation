@@ -2,7 +2,7 @@
 Created on Jan 30, 2016
 @author: hanhanwu
 The data set are .csv files
-The last digit in each row of matchmaker.csv indicates whether the person is a good match... (how come they label people in this way)
+The last digit in each row of matchmaker.csv indicates whether the 2 people matched.
 Plot the agesonly .csv into scatter plot
 '''
 from pylab import *
