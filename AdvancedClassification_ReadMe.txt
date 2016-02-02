@@ -1,9 +1,9 @@
 1. Data source for MatchMaker dataset: agesonly.csv, matchmaker.csv
   * The agesonly.csv only includes matched ages since it is easier to visualize 2 variables.
-  * The matchmaker.csv contains each individual info as each row, the last element in each row (0 or 1) indicates whether this person is a good match..... (This makes the prediction easier, although I am wondering whether in reality, we often simplify problems in this way).
+  * The matchmaker.csv contains each pairs info as each row, the last element in each row (0 or 1) indicates whether these 2 people matched.
   
 2. load_match_data.py
-  * Load .cvs match data and generate a list of matchrow objects. Each object contains data as the person's info, and is_good_match to to indicate whether the person is a good match.
+  * Load .cvs match data and generate a list of matchrow objects. Each object contains data as the person's info, and match to to indicate whether the person is a good match.
   * Using a scatter plot could help tell how the data is divided.
   
 3. linear_clasifier.py
