@@ -36,6 +36,7 @@ Note: In both optimization methods, we are using domain to tell the range of eac
  * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
  Note: both rescaling and normalization here are all belong to feature rescaling.
  This link is good: http://www.dataminingblog.com/standardization-vs-normalization/
+ To understand why people wants to normalize variance, this is because  sometimes people may be only interested in how many standard deviations a feature value is away from mean instead of the actual variance value.  
  
 7. probability_guess.py
  * Telling the probabilities that a new item belongs to each range/category
