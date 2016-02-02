@@ -3,6 +3,7 @@ Created on Jan 31, 2016
 @author: hanhanwu
 Linear Classifier finds the average of each class and constructs points for each center,
 when the new data come in, they will be classified into the group of the closest center.
+The code here only provide a straight dividing live which can be incorrect.
 '''
 import load_match_data
 from pylab import *
