@@ -35,6 +35,7 @@ Note: In both optimization methods, we are using domain to tell the range of eac
  * By using rescale, we can control the influence from each attribute. For unnecessary attribute, we can set its scale value as 0.
  * By using normalization, we put each attribut between [0,1]. For unnecessary attribute, we can choose not to choose it.
  Note: both rescaling and normalization here are all belong to feature rescaling.
+ This link is good: http://www.dataminingblog.com/standardization-vs-normalization/
  
 7. probability_guess.py
  * Telling the probabilities that a new item belongs to each range/category
