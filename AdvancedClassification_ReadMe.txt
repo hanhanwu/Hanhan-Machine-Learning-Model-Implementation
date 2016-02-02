@@ -10,4 +10,5 @@
   * Using decision tree, the decision boundary will be forced to be vertical or horizontal, which is not good for multiple numerical input that doesn’t exhibit simple relationship.
   * Linear Classifier finds the average of each class and constructs points for each center, when the new data come in, they will be classified into the group of the closest center.
   * Using the calculation of dot products and vectors, we will be able to classify the new points into one of the 2 classes in this code.
+  * The code here only provide a straight dividing live which can be incorrect.
   
