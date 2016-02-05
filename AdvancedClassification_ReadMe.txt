@@ -21,3 +21,7 @@
   a. For yes, no answers, change "yes" to 1, change "no" to -1, change empty answer into 0.
   b. For interests, I am going to build hobby hierarchy, so that for people have exactly same hobbies, the total match score got higher; if they share same category but different hobbies, got high sore too but lower than the first case;
   
+  
+5. categorize_hobbies.py
+  * In order to build the hobby hierarchy in preprocess_data.py, need to check the hobbies data.
+  
