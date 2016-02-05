@@ -24,4 +24,5 @@
   
 5. categorize_hobbies.py
   * In order to build the hobby hierarchy in preprocess_data.py, need to check the hobbies data.
+  * Here, I am simply creating dictionary to store the hierarchial hobbies, in reality, if we want more accurate result, we can gather attributes data for each item, each category, then calculate the similarity using methods like Jaccard Similarity.
   
