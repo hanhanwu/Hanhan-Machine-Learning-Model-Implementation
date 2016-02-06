@@ -19,7 +19,8 @@
 23,no,no,football:fashion,102 1st Ave New York NY,30,no,no,snowboarding:knitting:computers:shopping:tv:travel,151 W 34th St New York NY,1
 
   a. For yes, no answers, change "yes" to 1, change "no" to -1, change empty answer into 0.
-  b. For interests, I am going to build hobby hierarchy, so that for people have exactly same hobbies, the total match score got higher; if they share same category but different hobbies, got high sore too but lower than the first case;
+  b. For hobies, I am going to build hobby hierarchy, so that for people have exactly same hobbies, the total match score got higher; if they share same category but different hobbies, got high sore too but lower than the first case;
+  c. For geo-distances, I'm using geopy to get latitude, longitude based on the address, and measure geo-distance  (Python libraries is so powerful). geopy provides 2 formulas to calculate distances: great-circle and vincenty, I am using vincenty since it is more accurate.
   
   
 5. categorize_hobbies.py
