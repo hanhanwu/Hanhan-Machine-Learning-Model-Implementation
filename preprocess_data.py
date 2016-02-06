@@ -9,6 +9,7 @@ import Levenshtein
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
 
+
 def yes_or_no(asw):
     if asw == 'yes': return 1
     elif asw == 'no': return -1
@@ -23,6 +24,7 @@ def hobby_hierarchy():
     hobby_dict['animal'] = ['animals']
     
     return hobby_dict
+
 
 def same_category(h1, h2):
     hobby_dict = hobby_hierarchy()
@@ -42,11 +44,9 @@ def common_hobby_score(h1_lst, h2_lst):
             # using Levenshtein helps find same items with different naming or created by spelling mistakes
             lev_ratio = Levenshtein.ratio(h1, h2)
             if lev_ratio >= 0.8:
-                print 'same: ', h1,',', h2
                 score += 1
                 break     # using break, we can avoid repeatedly using same items to add the score
             elif same_category(h1, h2) == True:
-                print 'same category: ', h1,',', h2
                 score += 0.8
                 break
     return score
@@ -68,6 +68,27 @@ def calculate_distance(add1, add2):
     
     distce = vincenty(al1, al2).miles
     return distce
+
+
+def to_numerical(data_path):
+    f = file(data_path)
+    numerical_rows = []
+    
+    for l in f:
+        new_row = []
+        elems = l.split(',')
+        new_row.append(float(elems[0]))
+        new_row.append(float(elems[5]))
+        for i in [1,2,6,7]:
+            new_row.append(yes_or_no(elems[i]))
+        new_row.append(common_hobby_score(elems[3], elems[8]))
+        new_row.append(calculate_distance(elems[4], elems[9]))
+        new_row.append(float(elems[-1]))
+        print new_row
+        
+        numerical_rows.append(new_row)
+    return numerical_rows
+        
 
 
 def main():
@@ -93,6 +114,13 @@ def main():
     add1 = ans1[4]
     add2 = ans1[9]
     print 'distance between ', add1, ' and ', add2, 'is: ', str(calculate_distance(add1, add2))
+    
+    print '*******************covert all the data to numerical*******************'
+    matchmaker_path = '/Users/hanhanwu/Desktop/matchmaker.csv' 
+    numerical_rows = to_numerical(matchmaker_path)
+    print len(numerical_rows)
+    print numerical_rows[0]
+    
     
 if __name__ == '__main__':
     main()
