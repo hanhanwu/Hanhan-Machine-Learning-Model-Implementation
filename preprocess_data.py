@@ -144,7 +144,7 @@ def main():
     print 'distance between ', add1, ' and ', add2, 'is: ', str(calculate_distance(add1, add2))
     
     print '*******************covert all the data to numerical*******************'
-    matchmaker_path = '/Users/hanhanwu/Desktop/test.csv' 
+    matchmaker_path = '[your matchmaker.csv path]'  # change to your matchmaker.csv path
     ls = file(matchmaker_path)
     numerical_rows = to_numerical(ls)
     print len(numerical_rows)
