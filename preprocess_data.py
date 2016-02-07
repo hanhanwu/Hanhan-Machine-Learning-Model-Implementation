@@ -13,6 +13,7 @@ from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
 import load_match_data
 from matplotlib.mlab import recs_join
+import linear_classifier
 
 
 def yes_or_no(asw):
@@ -75,8 +76,7 @@ def calculate_distance(add1, add2):
     return distce
 
 
-def to_numerical(data_path):
-    f = file(data_path)
+def to_numerical(f):
     numerical_rows = []
     
     for l in f:
@@ -93,6 +93,7 @@ def to_numerical(data_path):
         
         numerical_rows.append(new_row)
     return numerical_rows
+
         
         
 def rescale_data(numerical_rows):
@@ -106,8 +107,7 @@ def rescale_data(numerical_rows):
         for i in range(row_num):
             if r[i] > maxs[i]: maxs[i] = r[i]
             if r[i] < mins[i]: mins[i] = r[i]
-            
-            
+                       
     # rescale each row
     for r in numerical_rows:
         for i in range(row_num):
@@ -144,8 +144,9 @@ def main():
     print 'distance between ', add1, ' and ', add2, 'is: ', str(calculate_distance(add1, add2))
     
     print '*******************covert all the data to numerical*******************'
-    matchmaker_path = '[you own matchmaker.csv path]' # change to you own matchmaker.csv path
-    numerical_rows = to_numerical(matchmaker_path)
+    matchmaker_path = '/Users/hanhanwu/Desktop/test.csv' 
+    ls = file(matchmaker_path)
+    numerical_rows = to_numerical(ls)
     print len(numerical_rows)
     print numerical_rows[0]
     
@@ -153,6 +154,17 @@ def main():
     rescaled_data = rescale_data(numerical_rows)
     for r in rescaled_data:
         print r.data, ', ', r.match
+        
+    print '*******************train rescale data*******************'
+    print 'class cenetrs'
+    averages = linear_classifier.train_data(rescaled_data)
+    for k,v in averages.items():
+        print k, v
+        
+    print 'classify new points'
+    testing_point = [43.0, 35.0, -1, 1, -1, 1, 15, 1.6189873022356103]
+    print linear_classifier.classify_dp(testing_point, averages)
+
     
 if __name__ == '__main__':
     main()
