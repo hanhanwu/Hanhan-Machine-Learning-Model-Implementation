@@ -1,13 +1,18 @@
 '''
 Created on Feb 1, 2016
 @author: hanhanwu
-convert nominal data into numerical data since classifiers only deal with numerical data
-Using geopy to get latitude, longitude based on the address, and measure geo-distance  (Python libraries is so powerful)
+1. Convert nominal data into numerical data since classifiers only deal with numerical data
+2. Using geopy to get latitude, longitude based on the address, and measure geo-distance  (Python libraries is so powerful)
 geopy provides 2 formulas to calculate distances: great-circle and vincenty, I am using vincenty since it is more accurate
+3. Rescale Data: for each column, vonvert the data into [0,1] range based on their min, max, in this way, for each row, 
+they all share the same scale too
 '''
 import Levenshtein
+import sys
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
+import load_match_data
+from matplotlib.mlab import recs_join
 
 
 def yes_or_no(asw):
@@ -83,12 +88,35 @@ def to_numerical(data_path):
             new_row.append(yes_or_no(elems[i]))
         new_row.append(common_hobby_score(elems[3], elems[8]))
         new_row.append(calculate_distance(elems[4], elems[9]))
-        new_row.append(float(elems[-1]))
+        new_row.append(int(elems[-1]))
         print new_row
         
         numerical_rows.append(new_row)
     return numerical_rows
         
+        
+def rescale_data(numerical_rows):
+    results = []
+    row_num = len(numerical_rows[0])
+    maxs = [-sys.maxint-1]*row_num
+    mins = [sys.maxint]*row_num
+    
+    # get max, min for each column
+    for r in numerical_rows:
+        for i in range(row_num):
+            if r[i] > maxs[i]: maxs[i] = r[i]
+            if r[i] < mins[i]: mins[i] = r[i]
+            
+            
+    # rescale each row
+    for r in numerical_rows:
+        for i in range(row_num):
+            if maxs[i] == mins[i]: r[i] = 0
+            else: r[i] = float(r[i] - mins[i])/(maxs[i]-mins[i])
+        results.append(load_match_data.matchrow(r, all_num=True))
+            
+    return results
+    
 
 
 def main():
@@ -116,11 +144,15 @@ def main():
     print 'distance between ', add1, ' and ', add2, 'is: ', str(calculate_distance(add1, add2))
     
     print '*******************covert all the data to numerical*******************'
-    matchmaker_path = '/Users/hanhanwu/Desktop/matchmaker.csv' 
+    matchmaker_path = '/Users/hanhanwu/Desktop/test.csv' 
     numerical_rows = to_numerical(matchmaker_path)
     print len(numerical_rows)
     print numerical_rows[0]
     
+    print '*******************rescale data*******************'
+    rescaled_data = rescale_data(numerical_rows)
+    for r in rescaled_data:
+        print r.data, ', ', r.match
     
 if __name__ == '__main__':
     main()
