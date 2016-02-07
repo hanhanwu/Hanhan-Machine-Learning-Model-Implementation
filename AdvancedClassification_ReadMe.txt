@@ -23,6 +23,7 @@
   c. For geo-distances, I'm using geopy to get latitude, longitude based on the address, and measure geo-distance  (Python libraries is so powerful). geopy provides 2 formulas to calculate distances: great-circle and vincenty, I am using vincenty since it is more accurate.
   d. Convert each row of the data input into numerical data row.
   e. Rescale the data, for each column, get their max and min, then using float(r[i]-min[i])/(max[i]-min[i]) to do the rescaling. Since in this way, all the column data will be in range [0,1], so for each row, the data is also on the same scale.
+  f. Train the data and get prediction results with rescaled data.
   
   
 5. categorize_hobbies.py
