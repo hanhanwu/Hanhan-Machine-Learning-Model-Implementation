@@ -57,14 +57,14 @@ def get_offset(rs, gamma=10):
 
 def main():
     print 'use agesonly.csv to predict:'
-    agesonly_path = '/Users/hanhanwu/Desktop/agesonly.csv' 
+    agesonly_path = '[your agesonly.csv path]'  # change to your agesonly.csv path
     agesonly_rows = load_match_data.load_csv(agesonly_path, True)
     offset1 = get_offset(agesonly_rows)
     print nlclassify([27, 30], agesonly_rows, offset1)
     print nlclassify([30, 27], agesonly_rows, offset1)
     
     print 'use scaled matchmaker.csv to predict:'
-    matchmaker_path = '/Users/hanhanwu/Desktop/test.csv' 
+    matchmaker_path = '[your matchmaker.csv path]'  # change to your matchmaker.csv path
     ls = file(matchmaker_path)
     numerical_rows = preprocess_data.to_numerical(ls)
     rescaled_data = preprocess_data.rescale_data(numerical_rows)
