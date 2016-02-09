@@ -156,7 +156,7 @@ def main():
         print r.data, ', ', r.match
         
     print '*******************train rescale data*******************'
-    print 'class cenetrs'
+    print 'class centers'
     averages = linear_classifier.train_data(rescaled_data)
     for k,v in averages.items():
         print k, v
