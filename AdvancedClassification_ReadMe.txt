@@ -44,6 +44,8 @@
    e. svm - the algorithm used to find support vectors to find the dividing line.
   * svm also uses dot-product so that they can be used with kernels to perform nonlinear classification.
   * svm works well with high dimensional datasets, they are often applied to very complex sets of data or data-intensive scientific problems.
-  * Download libsvm here: https://www.csie.ntu.edu.tw/~cjlin/libsvm/#download
-  * libsvm pyhton: https://github.com/hanhanwu/libsvm/tree/master/python
+  * f. libsvm:
+    Download libsvm here: https://www.csie.ntu.edu.tw/~cjlin/libsvm/#download
+    libsvm pyhton: https://github.com/hanhanwu/libsvm/tree/master/python
+    how to tune paramaters and why: https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf
   
