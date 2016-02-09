@@ -25,8 +25,12 @@
   e. Rescale the data, for each column, get their max and min, then using float(r[i]-min[i])/(max[i]-min[i]) to do the rescaling. Since in this way, all the column data will be in range [0,1], so for each row, the data is also on the same scale.
   f. Train the data and get prediction results with rescaled data.
   
-  
 5. categorize_hobbies.py
   * In order to build the hobby hierarchy in preprocess_data.py, need to check the hobbies data.
   * Here, I am simply creating dictionary to store the hierarchial hobbies, in reality, if we want more accurate result, we can gather attributes data for each item, each category, then calculate the similarity using methods like Jaccard Similarity.
   
+6. kernel_trick.py
+  * Compared with linear classifier I implemented before here, I am using radial-basis function (rbf) to replace the dot-product. We can also use other functions, but rbf is commonly used.
+  * rbf here also takes 2 vectors as input like dot-product does, the difference between them is, rbf is not linear (dot product is), so rbf can map more complex spaces.
+  * The kernel trick is to replace dot-product with a new function which returns what th dot-product would have been if data had been first been transformed to a higher dimenstional space using some mapping function. 
+  * We use kernel trick is because, once the data has been mapped into higher dimensions, it's easier to find the diving line between 2 classes, but in practice, finding a dividing line when working with real dataset can require casting data into hundreds or even thousands of dimensions, which is difficult to implement. Using kernel trick can solve this problem.
