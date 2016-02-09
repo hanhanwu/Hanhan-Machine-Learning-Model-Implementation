@@ -42,3 +42,6 @@
    c. The maximum-margin line (dividing line) has been chosen so that the parallel lines that touch the items from each classes as far from it as possible. Only the points at the margin needed to determine the placement o the dividing line.
    d. support vector - points near the line.
    e. svm - the algorithm used to find support vectors to find the dividing line.
+  * svm also uses dot-product so that they can be used with kernels to perform nonlinear classification.
+  * svm works well with high dimensional datasets, they are often applied to very complex sets of data or data-intensive scientific problems.
+  
