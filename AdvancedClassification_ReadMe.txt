@@ -29,8 +29,16 @@
   * In order to build the hobby hierarchy in preprocess_data.py, need to check the hobbies data.
   * Here, I am simply creating dictionary to store the hierarchial hobbies, in reality, if we want more accurate result, we can gather attributes data for each item, each category, then calculate the similarity using methods like Jaccard Similarity.
   
-6. kernel_trick.py
+6. kernel_trick.py  -- turn linear classifier into non-linear classifer
   * Compared with linear classifier I implemented before here, I am using radial-basis function (rbf) to replace the dot-product. We can also use other functions, but rbf is commonly used.
   * rbf here also takes 2 vectors as input like dot-product does, the difference between them is, rbf is not linear (dot product is), so rbf can map more complex spaces.
   * The kernel trick is to replace dot-product with a new function which returns what th dot-product would have been if data had been first been transformed to a higher dimenstional space using some mapping function. 
   * We use kernel trick is because, once the data has been mapped into higher dimensions, it's easier to find the diving line between 2 classes, but in practice, finding a dividing line when working with real dataset can require casting data into hundreds or even thousands of dimensions, which is difficult to implement. Using kernel trick can solve this problem.
+  
+7. svm.py
+  * SVM basic:
+   a. When we are using averages to get the dividing line, it will misclassify points when some points in a class are close to the dividing line while most of the points in this class are far away. SVM is the algorithm used to solve this problem.
+   b. maximum-margin hyperplane - the line that is as far away as possible from each of the classes.
+   c. The maximum-margin line (dividing line) has been chosen so that the parallel lines that touch the items from each classes as far from it as possible. Only the points at the margin needed to determine the placement o the dividing line.
+   d. support vector - points near the line.
+   e. svm - the algorithm used to find support vectors to find the dividing line.
