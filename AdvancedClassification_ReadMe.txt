@@ -35,7 +35,7 @@
   * The kernel trick is to replace dot-product with a new function which returns what th dot-product would have been if data had been first been transformed to a higher dimenstional space using some mapping function. 
   * We use kernel trick is because, once the data has been mapped into higher dimensions, it's easier to find the diving line between 2 classes, but in practice, finding a dividing line when working with real dataset can require casting data into hundreds or even thousands of dimensions, which is difficult to implement. Using kernel trick can solve this problem.
   
-7. svm.py
+7. SVM - using libsvm
   * SVM basic:
    a. When we are using averages to get the dividing line, it will misclassify points when some points in a class are close to the dividing line while most of the points in this class are far away. SVM is the algorithm used to solve this problem.
    b. maximum-margin hyperplane - the line that is as far away as possible from each of the classes.
@@ -44,4 +44,6 @@
    e. svm - the algorithm used to find support vectors to find the dividing line.
   * svm also uses dot-product so that they can be used with kernels to perform nonlinear classification.
   * svm works well with high dimensional datasets, they are often applied to very complex sets of data or data-intensive scientific problems.
+  * Download libsvm here: https://www.csie.ntu.edu.tw/~cjlin/libsvm/#download
+  * libsvm pyhton: https://github.com/hanhanwu/libsvm/tree/master/python
   
