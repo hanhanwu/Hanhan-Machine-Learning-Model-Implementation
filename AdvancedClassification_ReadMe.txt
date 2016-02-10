@@ -50,3 +50,6 @@
     how to tune paramaters and why: https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf
     Note: when both number of rows and number of features (like Natural Language Processing) are large, LIBSVM is not a good choice, use LIBLINEAR.
   
+8. using_libsvm.py
+  * using SVM with radial-basis function to train both agesonly.cvs data and matchmaker.csv data and make prediction for each type of new points.
+  * using libsvm here.
