@@ -52,4 +52,4 @@
   
 8. using_libsvm.py
   * using SVM with radial-basis function to train both agesonly.cvs data and matchmaker.csv data and make prediction for each type of new points.
-  * using libsvm here.
+  * using libsvm built in functions.
