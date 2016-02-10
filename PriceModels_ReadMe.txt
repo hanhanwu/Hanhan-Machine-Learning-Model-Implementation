@@ -18,7 +18,7 @@
 4. cross_validation.py
  * Using cross validation to test a model. In this code, the model is KNN(un-weighted and weighted).
  * With the help of cross validation, we can tune the parameters of the model to see which set of parameters give better results without getting overfit.
- * Note: when dividing the data in cross validation here, I think using percentage instead of folds to divide is better. Because using folds will have the limitation for the number of folds, depends on the size of the dataset. Therefore, larger folds will become uncessary since it will repeat previous tests. Using percentages with random() seldom get repeated tests and allows more times tests.
+ * Note: I am using monte carlo cross validation here, when it is fine to do many times iterations, monte carlo is better than k-fold cross validation. Because using folds will have the limitation for the number of folds, depends on the size of the dataset. Therefore, larger folds will become uncessary since it will repeat previous tests. Using percentages with random() seldom get repeated tests and allows more times tests. However, when the data is huge, sometimes, using k-fold in Spark mllib is more accurate and faster than monte carlo cross validation, by just using a few folds.
  
 5. optimization.py   (Optimization is good because, here you can see which attributes are important immediately)
  * Using annealing optimization - an algorithm used for global optimum. It is often used when the search space is discrete.
