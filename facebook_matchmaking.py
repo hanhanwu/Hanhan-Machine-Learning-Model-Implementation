@@ -269,6 +269,13 @@ def main():
     # this is my test point, you can change to other points
     p_labels, p_acc, p_vals = svm_predict([0], [[0.0, -1.0, -1.0, 0.0, -1.0, -1.0]], m)  
     
+    # One more interesting thing, I have tried scikit this morning, it is another machine learning python library,
+    # and it functions similar to R, in svm case
+    from sklearn import svm
+    clf = svm.SVC()
+    clf.fit(features, matches)   # Note, the classes in matches have to be more than 1 type, different from libsvm
+    clf.predict([0.0, -1.0, -1.0, 0.0, -1.0, -1.0])
+    
 if __name__ == '__main__':
     main()
 
