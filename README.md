@@ -7,5 +7,6 @@ Implement different type of machine learning models to deal with practical probl
 
 2. Advanced Classification for MatchMaker dataset
   * Dating website looks really magical, they match people based on the info each individual provided, the generated dataset is called MatchMaker dataset, which contains both numerical and nominal data.
-  * I am going to practice advanced classification models like SVM, linear classifiers and kernel methods in this part of code.
+  * I have practiced advanced classification models like SVM, linear classifiers and kernel methods in this part of code.
+  * Finally, I have parsed friends data through Facebook Graph API, then did data preprocessing and finally used SVM to do friends prediction.
   * Check AdvancedClassification_ReadMe.txt for all the details.
