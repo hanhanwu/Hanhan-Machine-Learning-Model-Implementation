@@ -53,3 +53,8 @@
 8. using_libsvm.py
   * using SVM with radial-basis function to train both agesonly.cvs data and matchmaker.csv data and make prediction for each type of new points.
   * using libsvm built in functions.
+
+9. facebook_matchmaking.py, fbtest.py
+  * I parsed the Facebook friends data through Facebook Graph API. 
+  * In fbtest.py, you will see where to get temporary token for the API and then run the code to test whether you can get the data from your friends.
+  * facebook_matchmaking.py including data parsing, data preprocessing and finally used libsvm to do friends prediction. For those people have been predicted as friends but they are not friends, can do match making (friends recommendation).
