@@ -58,3 +58,4 @@
   * I parsed the Facebook friends data through Facebook Graph API. 
   * In fbtest.py, you will see where to get temporary token for the API and then run the code to test whether you can get the data from your friends.
   * facebook_matchmaking.py including data parsing, data preprocessing and finally used libsvm to do friends prediction. For those people have been predicted as friends but they are not friends, can do match making (friends recommendation).
+  * Besides using libsvm in facebook_matchmaking.py, I have also tried scikit svm, it functions similar to R, in svm case, and got the same predction results as libsvm. But when you are using the svm in scikit, the classes type in training data has to be more than 1.
