@@ -14,4 +14,4 @@ Implement different type of machine learning models to deal with practical probl
 3. Searching and Ranking
  * I am creating a basic search engine in this part of code, and there are 4 steps:
    crawling, indexing, ranking, building neural network for ranking queries
- * Ckech ReadMe_SearchRanking.txt for all the details.
+ * Check ReadMe_SearchRanking.txt for all the details.
