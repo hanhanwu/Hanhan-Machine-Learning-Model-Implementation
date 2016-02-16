@@ -17,7 +17,6 @@ wiki_prefix2 = 'https:'
 
 ignorewords = Set(['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it'])
 foreign_filter = ['ca', 'cs', 'de', 'es', 'fa', 'fr', 'ko', 'he', 'hu', 'ja', 'pt', 'ru', 'sr', 'fi', 'sv', 'uk', 'zh']
-prefix_filter = ['']
 seed_page = urllib2.urlopen('https://en.wikipedia.org/wiki/Recommender_system')
 contents = seed_page.read()
 soup = BeautifulSoup(contents, 'lxml')
