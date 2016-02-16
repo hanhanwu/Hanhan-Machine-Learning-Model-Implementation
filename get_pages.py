@@ -34,7 +34,7 @@ for link in links:
 
 def url_editor(hrf):
     if hrf == '/wiki/Main_Page': return None
-    if hrf.startwith('#'): 
+    if hrf.startwith('#') or hrf.startwith('/w/index.php'): 
         return None
     m = re.search('//(\w+)\.wikipedia\.org.*?', hrf)
     if m != None:
