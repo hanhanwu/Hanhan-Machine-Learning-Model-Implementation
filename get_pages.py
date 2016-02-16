@@ -28,8 +28,9 @@ crawled_links = Set()
 for link in links:
     if 'href' in dict(link.attrs):
         hrf = link['href']
-        if hrf == '#': continue
-        print hrf
+        edited_url = url_editor(hrf)
+        if edited_url != None:
+            print edited_url
         
 
 def url_editor(hrf):
