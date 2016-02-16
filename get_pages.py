@@ -23,6 +23,15 @@ soup = BeautifulSoup(contents, 'lxml')
 links = soup('a')
 crawled_links = Set()
 
+def url_editor(hrf):
+    if hrf == '/wiki/Main_Page': return None
+    if hrf.startswith('#') or hrf.startswith('/w/index.php'): 
+        return None
+    m = re.search('//(\w+)\.wikipedia\.org.*?', hrf)
+    if m != None:
+        if m.group(1) in foreign_filter: return None
+        
+    return hrf
 
 for link in links:
     if 'href' in dict(link.attrs):
@@ -32,15 +41,6 @@ for link in links:
             print edited_url
         
 
-def url_editor(hrf):
-    if hrf == '/wiki/Main_Page': return None
-    if hrf.startwith('#') or hrf.startwith('/w/index.php'): 
-        return None
-    m = re.search('//(\w+)\.wikipedia\.org.*?', hrf)
-    if m != None:
-        if m.group(1) in foreign_filter: return None
-        
-    return hrf
         
     
 
