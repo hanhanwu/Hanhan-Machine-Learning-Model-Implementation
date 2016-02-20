@@ -5,12 +5,9 @@ Get urls from the seed web page, and get urls from each url
 The code aims at collecting urls in an indicated academic topics, 
 academic papers, related news, links will be put into a set of direct_resource
 Just for wiki english pages
-In this example, I am trying to get new links about Recommendation System from the seed page, 
-and record directed sources like academic papers, news report, demo urls.
 '''
 import  urllib2
 from bs4 import BeautifulSoup
-from urlparse import urljoin
 from sets import Set
 import re
 
@@ -47,19 +44,43 @@ def url_editor(hrf):
     
     return hrf
 
+
+def get_textonly(soup):
+    v = soup.string
+    
+    if v == None:
+        c = soup.contents
+        result_text = ''
+        result_text += get_textonly(c)+'\n'
+        return result_text
+    else:
+        return v.strip()
+    
 for link in links:
     if 'href' in dict(link.attrs):
         hrf = link['href']
         edited_url = url_editor(hrf)
         if edited_url != None:
+            link_text = link.text
+            print link_text
             if 'wiki' in edited_url: crawled_links.add(edited_url)
             else: direct_sources.add(edited_url)
             
 for new_link in crawled_links:
     print new_link
-    
+      
 print '*************************'
-    
+      
 for dsource in direct_sources:
     print dsource
     
+
+    
+        
+        
+
+        
+
+        
+    
+
