@@ -1,9 +1,13 @@
 '''
 Created on Feb 15, 2016
 @author: hanhanwu
-Get urls from the seed web page, and get urls from each url
 The code aims at collecting urls in an indicated academic topics, 
 academic papers, related news, links will be put into a set of direct_resource
+* Get urls from the seed web page, and get urls from each url, how many layers to on depends o the defined depth
+* Return:
+    direct_sources - the sources read for research directly
+    page_connections - the from page and the to page
+    page_records - the page url and its text
 Just for wiki english pages
 '''
 import  urllib2
@@ -11,20 +15,21 @@ from bs4 import BeautifulSoup
 from sets import Set
 import re
 
-seed_page = 'https://en.wikipedia.org/wiki/Recommender_system'
-wiki_prefix1 = 'https://en.wikipedia.org'
-wiki_prefix2 = 'https:'
-
-ignorewords = Set(['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it'])
-foreign_filter = ['ca', 'cs', 'de', 'es', 'fa', 'fr', 'ko', 'he', 'hu', 'ja', 'pt', 'ru', 'sr', 'fi', 'sv', 'uk', 'zh']
-seed_page = urllib2.urlopen('https://en.wikipedia.org/wiki/Recommender_system')
-contents = seed_page.read()
-soup = BeautifulSoup(contents, 'lxml')
-links = soup('a')
-crawled_links = Set()
-direct_sources = Set()
+class PageConnection:
+    def __init__(self, page_from, page_to):
+        self.page_from = page_from
+        self.page_to = page_to
+        
+class PageRecord:
+    def __init__(self, page_url, page_text):
+        self.page_url = page_url
+        self.page_text = page_text
 
 def url_editor(hrf):
+    wiki_prefix1 = 'https://en.wikipedia.org'
+    wiki_prefix2 = 'https:'
+    foreign_filter = ['ca', 'cs', 'de', 'es', 'fa', 'fr', 'ko', 'he', 'hu', 'ja', 'pt', 'ru', 'sr', 'fi', 'sv', 'uk', 'zh']
+    
     if 'wikimedia' in hrf or 'mediawiki' in hrf or 'wikidata' in hrf or 'index.php?' in hrf: 
         return None
     if hrf == '/wiki/Main_Page': return None
@@ -44,43 +49,64 @@ def url_editor(hrf):
     
     return hrf
 
+def get_textonly(sp):
+    all_text = sp.text
+    splitter = re.compile('\\W*')
+    text_lst = [s.lower() for s in splitter.split(all_text) if s!='']
+    return text_lst
 
-def get_textonly(soup):
-    v = soup.string
+def crawl(pages, depth=2):
+    all_pages = Set()
     
-    if v == None:
-        c = soup.contents
-        result_text = ''
-        result_text += get_textonly(c)+'\n'
-        return result_text
-    else:
-        return v.strip()
+    direct_sources = Set()
+    page_connections = []
+    page_records = []
     
-for link in links:
-    if 'href' in dict(link.attrs):
-        hrf = link['href']
-        edited_url = url_editor(hrf)
-        if edited_url != None:
-            link_text = link.text
-            print link_text
-            if 'wiki' in edited_url: crawled_links.add(edited_url)
-            else: direct_sources.add(edited_url)
+    for d in range(depth):
+        crawled_links = Set()
+        all_pages.update(pages)
+        for p in pages:
+            try:
+                page = urllib2.urlopen(p)
+            except:
+                print 'Cannot open: ',p
+                continue
+            contents = page.read()
+            soup = BeautifulSoup(contents, 'lxml')
+            links = soup('a')
+            page_text = get_textonly(soup)
+            page_records.append(PageRecord(p, page_text))
+        
+            for link in links:
+                if 'href' in dict(link.attrs):
+                    hrf = link['href']
+                    edited_url = url_editor(hrf)
+                    if edited_url != None:
+                        if 'wiki' in edited_url and edited_url not in all_pages:
+                            page_connections.append(PageConnection(p, edited_url))
+                            crawled_links.add(edited_url)
+                        else: direct_sources.add(edited_url)
+        for new_link in crawled_links:
+            print new_link
+        pages = crawled_links
+        
+    return direct_sources, page_connections, page_records
             
-for new_link in crawled_links:
-    print new_link
-      
-print '*************************'
-      
-for dsource in direct_sources:
-    print dsource
+   
+   
+def main():
+    seed_pages = ['https://en.wikipedia.org/wiki/Recommender_system']
+    direct_sources, page_connections, page_records = crawl(seed_pages)
+    print '***********direct sources***********'
+    for ds in direct_sources:
+        print ds
+    print '***********page connections***********'
+    for pc in page_connections:
+        print pc.page_from,', ', pc.page_to
+    print '***********page records***********'
+    for pr in page_records:
+        print pr.page_url,', ', str(len(pr.page_text))
     
-
     
-        
-        
-
-        
-
-        
-    
-
+if __name__ == '__main__':
+    main()
