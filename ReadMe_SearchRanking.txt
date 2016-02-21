@@ -4,3 +4,14 @@
   * BFS (breath first search), the search layer depends on the defined depth in the code.
   * As for direct sources which can be read for reseach directly, will be collected along the way.
   * Clean urls takes time and will vary based on the seed pages. I am using wiki pages so you will see some settings can be used for wiki engligh pages only.
+  
+2. Build DB connection, using SQLite
+* Using sqlite3 as database
+  Download sqlite here: http://www.sqlite.org/download.html
+  Opern your terminal, cd to the sqlite folder, type "sqlite3"
+* Create 5 tables and build index for each table
+a. urllist - stores crawled urls
+b. wordlist - stores all the words
+c. link - stores from_page id and to_page id
+d. linkwords - stores wordid and the relative linkid
+e. wordlocation - stores the location of the words in the relative url
