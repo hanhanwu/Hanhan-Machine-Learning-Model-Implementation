@@ -14,6 +14,7 @@ import  urllib2
 from bs4 import BeautifulSoup
 from sets import Set
 import re
+from nltk.stem.porter import *
 
 class PageConnection:
     def __init__(self, page_from, page_to):
@@ -52,7 +53,8 @@ def url_editor(hrf):
 def get_textonly(sp):
     all_text = sp.text
     splitter = re.compile('\\W*')
-    text_lst = [s.lower() for s in splitter.split(all_text) if s!='']
+    stemmer = PorterStemmer()
+    text_lst = [stemmer.stem(s.lower()) for s in splitter.split(all_text) if s!='']
     return text_lst
 
 def crawl(pages, depth=2):
