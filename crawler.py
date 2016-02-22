@@ -43,9 +43,6 @@ class crawler:
     def is_indexed(self, url):
         return False
     
-    # add a link between 2 pages
-    def add_link(self, url_from, url_to, link_txt):
-        pass
     
     def url_editor(self, hrf):
         wiki_prefix1 = 'https://en.wikipedia.org'
