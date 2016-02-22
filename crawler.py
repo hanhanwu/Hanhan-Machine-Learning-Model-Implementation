@@ -32,9 +32,13 @@ class crawler:
     def dbcommit(self):
         self.con.commit()
     
-    # Get table row id of an item, if not exist, insert it into table and return the relatice row id
+    # Get table row id of an item, if not exist, insert it into table and return the relative row id
     def get_row_id(self, table, field, value, create_new=True):
-        return None
+        rid = self.con.execute("select rowid from %s where %s='%s'" % (table, field, value)).fetchone()
+        if rid == None:
+            new_insert = self.con.execute("insert into %s (%s) values ('%s')" % (table, field, value))
+            return new_insert.lastrowid
+        return rid[0]
     
     # add this page urlid, wordid of each word in this page into wordlocation table
     def add_to_index(self, url, page_text):
@@ -117,7 +121,7 @@ class crawler:
             
         return direct_sources, page_connections, page_records
     
-    # create database tables
+    # create database tables and indexes
     def create_index_tables(self):
         self.con.execute('create table if not exists urllist(url)')
         self.con.execute('create table if not exists wordlist(word)')
