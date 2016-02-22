@@ -172,6 +172,8 @@ def main():
     # add page url and the page text into wordlocation table, the urllist, wordlist tables will be inserted along the way
     for pr in page_records:
         mycrawler.add_to_index(pr.page_url, pr.page_text, ignorewords)
-        
+    insertion_results = [r for r in mycrawler.con.execute('select rowid from wordlocation where wordid=1')]
+    print insertion_results
+    
 if __name__ == '__main__':
     main()
