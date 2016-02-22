@@ -33,7 +33,7 @@ class crawler:
         self.con.commit()
     
     # Get table row id of an item, if not exist, insert it into table and return the relative row id
-    def get_row_id(self, table, field, value, create_new=True):
+    def get_row_id(self, table, field, value):
         rid = self.con.execute("select rowid from %s where %s='%s'" % (table, field, value)).fetchone()
         if rid == None:
             new_insert = self.con.execute("insert into %s (%s) values ('%s')" % (table, field, value))
@@ -41,8 +41,18 @@ class crawler:
         return rid[0]
     
     # add this page urlid, wordid of each word in this page into wordlocation table
-    def add_to_index(self, url, page_text):
-        print 'Indexing %s' %url
+    def add_to_index(self, url, page_text, ignore_wrods):
+        if self.is_indexed(url): return
+        
+        print 'indexing ', url
+        uid = self.get_row_id('urllist', 'url', url)
+        
+        for i in range(len(page_text)):
+            w = page_text[i]
+            if w in ignore_wrods: continue
+            wid = self.get_row_id('wordlist', 'word', w)
+            self.con.execute('insert into wordlocation (urlid, wordid, location) values (%d,%d,%d)' % (uid, wid, i))
+        
         
     # check whether this page url has been indexed in urllist table and wordlocation table
     def is_indexed(self, url):
@@ -158,6 +168,10 @@ def main():
     print '***********page records***********'
     for pr in page_records:
         print pr.page_url,', ', str(len(pr.page_text))
+        
+    # add page url and the page text into wordlocation table, the urllist, wordlist tables will be inserted along the way
+    for pr in page_records:
+        mycrawler.add_to_index(pr.page_url, pr.page_text, ignorewords)
         
 if __name__ == '__main__':
     main()
