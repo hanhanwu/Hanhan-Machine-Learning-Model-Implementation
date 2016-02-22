@@ -36,13 +36,17 @@ class crawler:
     def get_row_id(self, table, field, value, create_new=True):
         return None
     
-    def add_to_index(self, url, soup):
+    # add this page urlid, wordid of each word in this page into wordlocation table
+    def add_to_index(self, url, page_text):
         print 'Indexing %s' %url
         
-    
+    # check whether this page url has been indexed in urllist table and wordlocation table
     def is_indexed(self, url):
-        return False
-    
+        u = self.con.execute("select rowid from urllist where url='%s'" % url).fetchone()
+        if u != None:
+            w = self.con.execute("select * from wordlocation where urlid=%d" % u[0]).fetchone()
+            if w != None: return True
+        return False    
     
     def url_editor(self, hrf):
         wiki_prefix1 = 'https://en.wikipedia.org'
