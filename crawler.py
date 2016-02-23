@@ -16,11 +16,13 @@ class PageConnection:
     def __init__(self, page_from, page_to):
         self.page_from = page_from
         self.page_to = page_to
+  
         
 class PageRecord:
     def __init__(self, page_url, page_text):
         self.page_url = page_url
         self.page_text = page_text
+
 
 class crawler:
     def __init__(self, dbname):
@@ -131,6 +133,37 @@ class crawler:
             
         return direct_sources, page_connections, page_records
     
+    # search for the words appear in the query, and return all the urls that contain these words on the same page
+    def multi_words_query(self, qry):
+        field_list = 't0.urlid'
+        table_list = ''
+        where_clause_list = ''
+        
+        query_words = qry.split()
+        query_words = [q.lower() for q in query_words]
+        table_num = 0
+        wordids = []
+        
+        for qw in query_words:
+            wr = self.con.execute("select rowid from wordlist where word='%s'" % qw).fetchone()
+            if wr != None:
+                wid = wr[0]
+                wordids.append(wid)
+                
+                if table_num > 0:
+                    table_list += ', '
+                    where_clause_list += ' and t%d.urlid=t%d.urlid and ' % (table_num-1, table_num)
+                field_list += ', t%d.location' % table_num
+                table_list += 'wordlocation t%d' % table_num
+                where_clause_list += 't%d.wordid=%d' % (table_num, wid)
+                table_num += 1
+                
+        sql_qry = 'select %s from %s where %s' % (field_list, table_list, where_clause_list)
+        print sql_qry
+        cur = self.con.execute(sql_qry)
+        urls = [r for r in cur]
+        return urls, wordids
+    
     # create database tables and indexes
     def create_index_tables(self):
         self.con.execute('create table if not exists urllist(url)')
@@ -174,6 +207,12 @@ def main():
         mycrawler.add_to_index(pr.page_url, pr.page_text, ignorewords)
     insertion_results = [r for r in mycrawler.con.execute('select rowid from wordlocation where wordid=1')]
     print insertion_results
+    
+    # multiple words query
+    qry = 'new Recommendation System'
+    urls, wordids = mycrawler.multi_words_query(qry)
+    print urls
+    print wordids
     
 if __name__ == '__main__':
     main()
