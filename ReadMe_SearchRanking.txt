@@ -23,3 +23,4 @@ e. wordlocation - stores the location of the words in the relative url
 * Build tables and indexs.
 * Crawl pages using a set of seed pages, the search level depends on the defined depth. Directed sources will be collected along the way.
 * Add crawled page url id and the id of each word on this page (not ignore words), as well as the word location on this page into table wordlocation. While checking the urlid, wordid from table urllist and worlist along the way, new items will be added into these 2 tables and return the created rowid. Finally do a simple test after the insertion.
+* The result returned by crawl() only supports 1 word search. Therefore, I have created a method called multi_word_query() which will return all the urls that contain thw words appeared in the query which has multiple words
