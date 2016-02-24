@@ -24,7 +24,7 @@ class PageRecord:
         self.page_text = page_text
 
 
-class crawler:
+class crawler_and_searcher:
     def __init__(self, dbname):
         self.con = sqlite.connect(dbname)
     
@@ -164,6 +164,9 @@ class crawler:
         urls = [r for r in cur]
         return urls, wordids
     
+    def get_full_url(self, urlid):
+        return self.con.execute('select url from urllist where urlid=%d' % urlid).fetchone()[0]
+    
     # create database tables and indexes
     def create_index_tables(self):
         self.con.execute('create table if not exists urllist(url)')
@@ -186,12 +189,12 @@ def main():
     
     # create tables and the indexes
     dbname = 'searchindex.db'
-    mycrawler = crawler(dbname)
-    mycrawler.create_index_tables()
+    mycrawler_searcher = crawler_and_searcher(dbname)
+    mycrawler_searcher.create_index_tables()
     
     # crawl the pages using a set of seed pages
     seed_pages = ['https://en.wikipedia.org/wiki/Recommender_system']
-    direct_sources, page_connections, page_records = mycrawler.crawl(seed_pages)
+    direct_sources, page_connections, page_records = mycrawler_searcher.crawl(seed_pages)
     print '***********direct sources***********'
     for ds in direct_sources:
         print ds
@@ -204,15 +207,17 @@ def main():
         
     # add page url and the page text into wordlocation table, the urllist, wordlist tables will be inserted along the way
     for pr in page_records:
-        mycrawler.add_to_index(pr.page_url, pr.page_text, ignorewords)
-    insertion_results = [r for r in mycrawler.con.execute('select rowid from wordlocation where wordid=1')]
+        mycrawler_searcher.add_to_index(pr.page_url, pr.page_text, ignorewords)
+    insertion_results = [r for r in mycrawler_searcher.con.execute('select rowid from wordlocation where wordid=1')]
     print insertion_results
     
     # multiple words query
     qry = 'new Recommendation System'
-    urls, wordids = mycrawler.multi_words_query(qry)
+    urls, wordids = mycrawler_searcher.multi_words_query(qry)
     print urls
     print wordids
+    
+    
     
 if __name__ == '__main__':
     main()
