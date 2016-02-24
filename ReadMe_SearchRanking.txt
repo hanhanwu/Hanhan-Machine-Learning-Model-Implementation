@@ -19,7 +19,7 @@ c. link - stores from_page id and to_page id
 d. linkwords - stores wordid and the relative linkid
 e. wordlocation - stores the location of the words in the relative url
 
-4. crawler.py
+4. crawler_and_searcher.py
 * Build tables and indexs.
 * Crawl pages using a set of seed pages, the search level depends on the defined depth. Directed sources will be collected along the way.
 * Add crawled page url id and the id of each word on this page (not ignore words), as well as the word location on this page into table wordlocation. While checking the urlid, wordid from table urllist and worlist along the way, new items will be added into these 2 tables and return the created rowid. Finally do a simple test after the insertion.
@@ -29,3 +29,4 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   from wordlocation t0, wordlocation t1
   where t0.wordid = 2 and t1.wordid = 247
   and t0.urlid = t1.urlid
+* Rank the returned urls in scores descending order
