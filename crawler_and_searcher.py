@@ -18,21 +18,26 @@ class PageConnection:
         self.page_to = page_to
   
         
+        
 class PageRecord:
     def __init__(self, page_url, page_text):
         self.page_url = page_url
         self.page_text = page_text
 
 
+
 class crawler_and_searcher:
     def __init__(self, dbname):
         self.con = sqlite.connect(dbname)
     
+    
     def __del__(self):
         self.con.close()
     
+    
     def dbcommit(self):
         self.con.commit()
+    
     
     # Get table row id of an item, if not exist, insert it into table and return the relative row id
     def get_row_id(self, table, field, value):
@@ -41,6 +46,7 @@ class crawler_and_searcher:
             new_insert = self.con.execute("insert into %s (%s) values ('%s')" % (table, field, value))
             return new_insert.lastrowid
         return rid[0]
+    
     
     # add this page urlid, wordid of each word in this page into wordlocation table
     def add_to_index(self, url, page_text, ignore_wrods):
@@ -63,6 +69,7 @@ class crawler_and_searcher:
             w = self.con.execute("select * from wordlocation where urlid=%d" % u[0]).fetchone()
             if w != None: return True
         return False    
+    
     
     def url_editor(self, hrf):
         wiki_prefix1 = 'https://en.wikipedia.org'
@@ -88,12 +95,14 @@ class crawler_and_searcher:
         
         return hrf
 
+
     def get_textonly(self, sp):
         all_text = sp.text
         splitter = re.compile('\\W*')
         stemmer = PorterStemmer()
         text_lst = [stemmer.stem(s.lower()) for s in splitter.split(all_text) if s!='']
         return text_lst
+    
     
     # start from a list of pages, do BFS (breath first search) to the given depth; collect direct sources along the way
     def crawl(self, pages, depth=2):
@@ -133,6 +142,7 @@ class crawler_and_searcher:
             
         return direct_sources, page_connections, page_records
     
+    
     # search for the words appear in the query, and return all the urls that contain these words on the same page
     def multi_words_query(self, qry):
         field_list = 't0.urlid'
@@ -164,8 +174,32 @@ class crawler_and_searcher:
         urls = [r for r in cur]
         return urls, wordids
     
+    
     def get_full_url(self, urlid):
         return self.con.execute('select url from urllist where urlid=%d' % urlid).fetchone()[0]
+    
+    
+    # get total score for each returned url
+    def get_url_scores(self, urls, wordids):
+        url_totalscore_dct = dict([(url[0], 0) for url in urls])
+        
+        weights = []  # to be modified
+        
+        for (weight, scores) in weights:
+            for url in url_totalscore_dct.keys():
+                url_totalscore_dct[url] += weight*scores[url]
+                
+        return url_totalscore_dct
+    
+    
+    def get_ranked_urls(self, qry):
+        urls, wordids = self.multi_words_query(qry)
+        url_scores = self.get_url_scores(urls, wordids)
+        
+        ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
+        for (score, url) in ranked_urls[0:10]:
+            print '%f\t%s' % (score, self.get_full_url(url))
+    
     
     # create database tables and indexes
     def create_index_tables(self):
