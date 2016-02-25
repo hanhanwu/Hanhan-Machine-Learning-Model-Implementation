@@ -178,6 +178,19 @@ class crawler_and_searcher:
     def get_full_url(self, urlid):
         return self.con.execute('select url from urllist where urlid=%d' % urlid).fetchone()[0]
     
+    # re-scale scores to the range of [0,1] and show represent how close to the better score (1), 
+    # since some small values maybe better while some higher values maybe better
+    def rescale_scores(self, scores, small_is_better=0):
+        v = 0.00001  # avoid to be divided by 0
+        if small_is_better:
+            min_score = float(min(scores.values()))
+            new_scores = dict([(u, min_score/max(v,s)) for (u, s) in scores.items()])
+        else:
+            max_score = max(scores.values())
+            if max_score == 0: max_score = v
+            new_scores = dict([(u, float(s)/max_score) for (u, s) in scores.items()])
+        return new_scores
+    
     
     # get total score for each returned url
     def get_url_scores(self, urls, wordids):
