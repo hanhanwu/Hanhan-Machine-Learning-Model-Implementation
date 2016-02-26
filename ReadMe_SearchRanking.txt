@@ -33,4 +33,4 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
 
 * In order to acieve the ranking, I am using some methods to calculate the scores
   a. All the scores have to be rescaled into the range of [0, 1] and all represent the same meaning, which means, the higher value means higher score while the lower value means the lowers score. Since when calculating scores, some lower value may represent higher score.
-  
+  b. Calculating the frequency of the words in the query appear on each same page.
