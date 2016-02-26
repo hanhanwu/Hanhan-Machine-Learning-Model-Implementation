@@ -192,7 +192,7 @@ class crawler_and_searcher:
         return new_scores
     
     
-    # cound how often the words in the query appear on each same page
+    # count how often the words in the query appear on each same page
     def word_frequency_score(self, urls):
         word_freq_dct = dict([(url[0], 0) for url in urls])
         for url in urls:
@@ -205,7 +205,7 @@ class crawler_and_searcher:
     def get_url_scores(self, urls, wordids):
         url_totalscore_dct = dict([(url[0], 0) for url in urls])
         
-        weights = []  # to be modified
+        weights = [(1.0, self.word_frequency_score(urls))] 
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
@@ -273,7 +273,8 @@ def main():
     print urls
     print wordids
     
-    
+    # show ranked urls
+    mycrawler_searcher.get_ranked_urls(qry)
     
 if __name__ == '__main__':
     main()
