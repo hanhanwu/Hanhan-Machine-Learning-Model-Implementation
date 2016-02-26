@@ -35,3 +35,4 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   a. All the scores have to be rescaled into the range of [0, 1] and all represent the same meaning, which means, the higher value means higher score while the lower value means the lowers score. Since when calculating scores, some lower value may represent higher score.
   b. Methods to calcuate different scores:
   Method 1 - Calculating the frequency of the words in the query appear on each same page.
+  In this case, using wiki page as the seed page, word frequency may not be the best score calculation method. For example, when I am using query "new Recommendation System", it returns New York City as the top 1 result, the real Recommender System page just ranked No.4
