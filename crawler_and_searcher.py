@@ -192,6 +192,15 @@ class crawler_and_searcher:
         return new_scores
     
     
+    # cound how often the words in the query appear on each same page
+    def word_frequency_score(self, urls):
+        word_freq_dct = dict([(url[0], 0) for url in urls])
+        for url in urls:
+            word_freq_dct[url[0]] += 1
+        return self.rescale_scores(word_freq_dct)
+        
+    
+    
     # get total score for each returned url
     def get_url_scores(self, urls, wordids):
         url_totalscore_dct = dict([(url[0], 0) for url in urls])
