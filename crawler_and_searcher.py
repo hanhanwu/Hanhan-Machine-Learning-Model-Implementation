@@ -176,7 +176,7 @@ class crawler_and_searcher:
     
     
     def get_full_url(self, urlid):
-        return self.con.execute('select url from urllist where urlid=%d' % urlid).fetchone()[0]
+        return self.con.execute('select url from urllist where rowid=%d' % urlid).fetchone()[0]
     
     # re-scale scores to the range of [0,1] and show represent how close to the better score (1), 
     # since some small values maybe better while some higher values maybe better
