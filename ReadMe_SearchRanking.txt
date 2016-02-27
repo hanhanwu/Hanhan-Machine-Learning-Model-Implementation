@@ -36,3 +36,5 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   b. Methods to calcuate different scores:
   Method 1 - Calculating the frequency of the words in the query appear on each same page.
   In this case, using wiki page as the seed page, word frequency may not be the best score calculation method. For example, when I am using query "new Recommendation System", it returns New York City as the top 1 result, the real Recommender System page just ranked No.4
+  
+  Method 2 - Checking words location, the earlier, score higher. Assuming most of the major topics or important content will appear near the top of the page.
