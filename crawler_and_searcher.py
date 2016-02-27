@@ -171,8 +171,8 @@ class crawler_and_searcher:
         sql_qry = 'select %s from %s where %s' % (field_list, table_list, where_clause_list)
         print sql_qry
         cur = self.con.execute(sql_qry)
-        urls = [r for r in cur]
-        return urls, wordids
+        rows = [r for r in cur]
+        return rows, wordids
     
     
     def get_full_url(self, urlid):
@@ -193,19 +193,23 @@ class crawler_and_searcher:
     
     
     # count how often the words in the query appear on each same page
-    def word_frequency_score(self, urls):
-        word_freq_dct = dict([(url[0], 0) for url in urls])
-        for url in urls:
-            word_freq_dct[url[0]] += 1
+    def word_frequency_score(self, rows):
+        word_freq_dct = dict([(row[0], 0) for row in rows])
+        for row in rows:
+            word_freq_dct[row[0]] += 1
         return self.rescale_scores(word_freq_dct)
+    
+    
+    # major topics always appear near the top of the pages, so score higher if the query words appear earlier in a page
+    
         
     
     
     # get total score for each returned url
-    def get_url_scores(self, urls, wordids):
-        url_totalscore_dct = dict([(url[0], 0) for url in urls])
+    def get_url_scores(self, rows, wordids):
+        url_totalscore_dct = dict([(row[0], 0) for row in rows])
         
-        weights = [(1.0, self.word_frequency_score(urls))] 
+        weights = [(1.0, self.word_frequency_score(rows))] 
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
@@ -215,8 +219,8 @@ class crawler_and_searcher:
     
     
     def get_ranked_urls(self, qry):
-        urls, wordids = self.multi_words_query(qry)
-        url_scores = self.get_url_scores(urls, wordids)
+        rows, wordids = self.multi_words_query(qry)
+        url_scores = self.get_url_scores(rows, wordids)
         
         ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
         for (score, url) in ranked_urls[0:10]:
@@ -269,8 +273,8 @@ def main():
     
     # multiple words query
     qry = 'new Recommendation System'
-    urls, wordids = mycrawler_searcher.multi_words_query(qry)
-    print urls
+    rows, wordids = mycrawler_searcher.multi_words_query(qry)
+    print rows
     print wordids
     
     # show ranked urls
