@@ -211,13 +211,25 @@ class crawler_and_searcher:
         return self.rescale_scores(words_location_dct, small_is_better=1)
         
     
+    # if the query words are closer to each other in a page, score the page higher, here I am tolerating the words order
+    def words_distance_scores(self, rows):
+        # each row has the same length, of the row has just no more than 1 word, return the score as 1.0
+        if len(rows[0]) <= 2: return dict([(row[0], 1.0) for row in rows])
+        
+        words_dist_dct = dict([(row[0], 1000000) for row in rows])
+        for row in rows:
+            dist_score = sum(abs(row[i] - row[i-1]) for i in range(2,len(row)))
+            if dist_score < words_dist_dct[row[0]]:
+                words_dist_dct[row[0]] = dist_score
+        return self.rescale_scores(words_dist_dct, small_is_better=1)
+    
     
     # get total score for each returned url
     def get_url_scores(self, rows, wordids):
         url_totalscore_dct = dict([(row[0], 0) for row in rows])
         
-#         weights = [(1.0, self.word_frequency_score(rows))]  # using the words frequency to calculate the score
-        weights = [(1.0, self.words_location_scores(rows))]  # using the words location to calculate the score
+        weights = [(1.0, self.word_frequency_score(rows)), (2.0, self.words_location_scores(rows)), 
+                   (3.0, self.words_distance_scores(rows))]
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
@@ -280,7 +292,7 @@ def main():
     print insertion_results
     
     # multiple words query
-    qry = 'new Recommendation System'
+    qry = 'Recommendation System'
     rows, wordids = mycrawler_searcher.multi_words_query(qry)
     print rows
     print wordids
