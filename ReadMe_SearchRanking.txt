@@ -39,6 +39,6 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   
   Method 2 - Checking words location, the earlier, score higher. Assuming most of the major topics or important content will appear near the top of the page. Here, the whole row of the sqlite records will be used, row[0] is the url id while other columns in a row indicates the locations of those query words appeared on the same page. In this score, the lower, better before rescaling.
   
-  Method 3 - Checking query words distance on the same page, assuming closer the more relative, and give the page higher score before rescaling. Here I am simpling calculating adjacent words distance and sum them up.
+  Method 3 - Checking query words distance on the same page, assuming closer the more relative, and give the page higher score before rescaling. Here I am simpling calculating adjacent words distance and sum them up, and I am ignoring the order of the query words.
   
   For each method, I am giving each method different weight based on how important they are to the results. The returned results work well on query = "Recommendation System", but has some unexpected results when query = "new Recommendation System".
