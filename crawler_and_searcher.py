@@ -178,6 +178,7 @@ class crawler_and_searcher:
     def get_full_url(self, urlid):
         return self.con.execute('select url from urllist where rowid=%d' % urlid).fetchone()[0]
     
+    
     # re-scale scores to the range of [0,1] and show represent how close to the better score (1), 
     # since some small values maybe better while some higher values maybe better
     def rescale_scores(self, scores, small_is_better=0):
@@ -201,7 +202,13 @@ class crawler_and_searcher:
     
     
     # major topics always appear near the top of the pages, so score higher if the query words appear earlier in a page
-    
+    def words_location_scores(self, rows):
+        words_location_dct = dict([(row[0], 1000000) for row in rows])
+        for row in rows:
+            loc_score = sum(row[1:])
+            if loc_score < words_location_dct[row[0]]:
+                words_location_dct[row[0]] = loc_score
+        return self.rescale_scores(words_location_dct, small_is_better=1)
         
     
     
@@ -209,7 +216,8 @@ class crawler_and_searcher:
     def get_url_scores(self, rows, wordids):
         url_totalscore_dct = dict([(row[0], 0) for row in rows])
         
-        weights = [(1.0, self.word_frequency_score(rows))] 
+#         weights = [(1.0, self.word_frequency_score(rows))]  # using the words frequency to calculate the score
+        weights = [(1.0, self.words_location_scores(rows))]  # using the words location to calculate the score
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
