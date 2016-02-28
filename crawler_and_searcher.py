@@ -60,6 +60,16 @@ class crawler_and_searcher:
             if w in ignore_wrods: continue
             wid = self.get_row_id('wordlist', 'word', w)
             self.con.execute('insert into wordlocation (urlid, wordid, location) values (%d,%d,%d)' % (uid, wid, i))
+            
+            
+    # insert the link connections into link table
+    def insert_connections(self, page_connections):
+        for pc in page_connections:
+            page_from = pc.page_from
+            page_to = pc.page_to
+            fromid = self.get_row_id('urllist', 'url', page_from)
+            toid = self.get_row_id('urllist', 'url', page_to)
+            self.con.execute('insert into link (fromid, toid) values (%d, %d)' % (fromid, toid))
         
         
     # check whether this page url has been indexed in urllist table and wordlocation table
@@ -281,22 +291,24 @@ def main():
     print '***********page connections***********'
     for pc in page_connections:
         print pc.page_from,', ', pc.page_to
+    mycrawler_searcher.insert_connections(page_connections) 
+    
     print '***********page records***********'
     for pr in page_records:
         print pr.page_url,', ', str(len(pr.page_text))
-        
+         
     # add page url and the page text into wordlocation table, the urllist, wordlist tables will be inserted along the way
     for pr in page_records:
         mycrawler_searcher.add_to_index(pr.page_url, pr.page_text, ignorewords)
     insertion_results = [r for r in mycrawler_searcher.con.execute('select rowid from wordlocation where wordid=1')]
     print insertion_results
-    
+     
     # multiple words query
     qry = 'Recommendation System'
     rows, wordids = mycrawler_searcher.multi_words_query(qry)
     print rows
     print wordids
-    
+     
     # show ranked urls
     mycrawler_searcher.get_ranked_urls(qry)
     
