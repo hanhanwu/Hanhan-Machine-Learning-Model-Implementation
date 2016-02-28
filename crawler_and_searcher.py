@@ -234,12 +234,20 @@ class crawler_and_searcher:
         return self.rescale_scores(words_dist_dct, small_is_better=1)
     
     
+    # when there is more inbound links, the higher score for the page
+    def inbound_links_score(self, rows):
+        # the urls in all the rows are unique since I have used sets in the crawler
+        inbound_links_dct = dict([(row[0], 
+                self.con.execute('select count(*) from link where toid=%d' % row[0]).fetchone()[0]) for row in rows])
+        return self.rescale_scores(inbound_links_dct)
+            
+    
     # get total score for each returned url
     def get_url_scores(self, rows, wordids):
         url_totalscore_dct = dict([(row[0], 0) for row in rows])
         
         weights = [(1.0, self.word_frequency_score(rows)), (2.0, self.words_location_scores(rows)), 
-                   (3.0, self.words_distance_scores(rows))]
+                   (3.0, self.words_distance_scores(rows)), (2.5, self.inbound_links_score(rows))]
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
