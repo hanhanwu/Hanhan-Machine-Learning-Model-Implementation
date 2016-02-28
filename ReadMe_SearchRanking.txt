@@ -44,3 +44,7 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   Method 4 - Counting the inbound links amount within a page. If a page has more relative links, it gets higher score. In this case, this method may not be the most important method.
   
   For each method, I am giving each method different weight based on how important they are to the results. The returned results work well on query = "Recommendation System", but has some unexpected results when query = "new Recommendation System". Combine all the methods together when calculating the page score will bring better/more reliable results.
+  
+ * PageRank - Calculates the probability that someone randomly clicking on links will arrive at a certain page. The more inbound links the page. The more inbound links the page has form other popular pages, the more likely it is that someone will end up on this page. 
+  PageRank also uses a damping factor of 0.85, means there is 85% chance that a user will continue clicking on links at each page.
+ 
