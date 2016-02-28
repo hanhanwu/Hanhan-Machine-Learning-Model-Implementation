@@ -41,4 +41,6 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   
   Method 3 - Checking query words distance on the same page, assuming closer the more relative, and give the page higher score before rescaling. Here I am simpling calculating adjacent words distance and sum them up, since the words id returned by the sqlite query has already guaranteed showtest combination. I am also ignoring the order of the query words.
   
-  For each method, I am giving each method different weight based on how important they are to the results. The returned results work well on query = "Recommendation System", but has some unexpected results when query = "new Recommendation System".
+  Method 4 - Counting the inbound links amount within a page. If a page has more relative links, it gets higher score. In this case, this method may not be the most important method.
+  
+  For each method, I am giving each method different weight based on how important they are to the results. The returned results work well on query = "Recommendation System", but has some unexpected results when query = "new Recommendation System". Combine all the methods together when calculating the page score will bring better/more reliable results.
