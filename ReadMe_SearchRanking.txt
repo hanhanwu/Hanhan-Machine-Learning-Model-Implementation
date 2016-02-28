@@ -47,4 +47,4 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
   
  * PageRank - Calculates the probability that someone randomly clicking on links will arrive at a certain page. The more inbound links the page. The more inbound links the page has form other popular pages, the more likely it is that someone will end up on this page. 
   PageRank also uses a damping factor of 0.85, means there is 85% chance that a user will continue clicking on links at each page.
- 
+ The page_rank() method is used to do page rank. When I initialize all the url score as 1.0, each iteration will make the score get closer to the real score. The number of iterations depends on the crawled url amount, I am using 10 here is enough. Here, when calculating the 
