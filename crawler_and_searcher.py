@@ -263,6 +263,29 @@ class crawler_and_searcher:
         ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
         for (score, url) in ranked_urls[0:10]:
             print '%f\t%s' % (score, self.get_full_url(url))
+            
+            
+    # PageRank            
+    def page_rank(self, itr=10):
+        # create a new table and initialize the score for each url as 1.0
+        self.con.execute('drop table if exists pagerank')
+        self.con.execute('create table pagerank(urlid primary key, score)')
+        self.con.execute('insert into pagerank select rowid, 1.0 from urllist')
+            
+        for i in range(itr):
+            print 'iteration ', str(itr)
+            for (urlid,) in self.con.execute('select rowid from urllist'):
+                pr = 0.15
+                for (fromid,) in self.con.execute('select fromid from link where toid=%d' % urlid):
+                    inbound_links_count = self.con.execute('select count(*) from link where toid=%d' % fromid).fetchone()[0]
+                    if inbound_links_count == 0: inbound_links_count = 99999
+                    page_score = self.con.execute('select score from pagerank where urlid=%d' % fromid).fetchone()[0]
+                    pr += 0.85*page_score/inbound_links_count
+                self.con.execute('update pagerank set score=%f where urlid=%d' % (pr, urlid))
+                
+        cur = self.con.execute('select * from pagerank order by score desc')
+        for i in range(5):
+            print cur.next()
     
     
     # create database tables and indexes
@@ -319,6 +342,9 @@ def main():
      
     # show ranked urls
     mycrawler_searcher.get_ranked_urls(qry)
+    
+    # page rank
+    mycrawler_searcher.page_rank()
     
 if __name__ == '__main__':
     main()
