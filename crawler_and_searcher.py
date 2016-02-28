@@ -273,7 +273,7 @@ class crawler_and_searcher:
         self.con.execute('insert into pagerank select rowid, 1.0 from urllist')
             
         for i in range(itr):
-            print 'iteration ', str(itr)
+            print 'iteration ', str(i)
             for (urlid,) in self.con.execute('select rowid from urllist'):
                 pr = 0.15
                 for (fromid,) in self.con.execute('select fromid from link where toid=%d' % urlid):
