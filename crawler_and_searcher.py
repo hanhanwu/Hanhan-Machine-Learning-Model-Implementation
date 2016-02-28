@@ -285,7 +285,8 @@ class crawler_and_searcher:
                 
         cur = self.con.execute('select * from pagerank order by score desc')
         for i in range(5):
-            print cur.next()
+            urlid, score = cur.next()
+            print self.get_full_url(urlid), score
     
     
     # create database tables and indexes
