@@ -69,7 +69,16 @@ class crawler_and_searcher:
             page_to = pc.page_to
             fromid = self.get_row_id('urllist', 'url', page_from)
             toid = self.get_row_id('urllist', 'url', page_to)
-            self.con.execute('insert into link (fromid, toid) values (%d, %d)' % (fromid, toid))
+            cur = self.con.execute('insert into link (fromid, toid) values (%d, %d)' % (fromid, toid))
+            
+    
+    def insert_linkwords(self):
+        self.con.execute("""
+        insert into linkwords (wordid, linkid)
+        select wl.wordid, link.rowid from
+        link join wordlocation wl
+        on link.toid = wl.urlid
+        """)
         
         
     # check whether this page url has been indexed in urllist table and wordlocation table
@@ -235,7 +244,7 @@ class crawler_and_searcher:
     
     
     # when there is more inbound links, the higher score for the page
-    def inbound_links_score(self, rows):
+    def inbound_links_scores(self, rows):
         # the urls in all the rows are unique since I have used sets in the crawler
         inbound_links_dct = dict([(row[0], 
                 self.con.execute('select count(*) from link where toid=%d' % row[0]).fetchone()[0]) for row in rows])
@@ -266,20 +275,42 @@ class crawler_and_searcher:
             print self.get_full_url(urlid), score
             
             
-    def pagerank_score(self, rows):
+    def pagerank_scores(self, rows):
         self.page_rank()
         pagerank_dct = dict([(row[0], 
                     self.con.execute('select score from pagerank where urlid=%d' % row[0]).fetchone()[0]) for row in rows])
         return self.rescale_scores(pagerank_dct)
     
     
+    # find pages that contain the query words and get PageRank scores from its from_page, calculate the score
+    def link_text_scores(self, rows, wordids):
+        self.insert_linkwords()
+        link_text_dct = dict([(row[0], 0) for row in rows])
+        
+        for wid in wordids:
+            cur = self.con.execute("""
+            select link.fromid, link.toid from link, linkwords 
+            where linkwords.wordid=%d
+            and link.rowid=linkwords.linkid
+            """ % wid)
+            
+            for (fromid, toid) in cur:
+                if toid in link_text_dct.keys():
+                    pr = self.con.execute("""
+                    select score from pagerank 
+                    where urlid=%d
+                    """ % fromid).fetchone()[0]
+                    link_text_dct[toid] += pr
+        return self.rescale_scores(link_text_dct)
+                        
+    
     # get total score for each returned url
     def get_url_scores(self, rows, wordids):
         url_totalscore_dct = dict([(row[0], 0) for row in rows])
         
         weights = [(1.0, self.word_frequency_score(rows)), (2.0, self.words_location_scores(rows)), 
-                   (3.0, self.words_distance_scores(rows)), (2.5, self.inbound_links_score(rows)),
-                   (4.0, self.pagerank_score(rows))]
+                   (3.0, self.words_distance_scores(rows)), (2.5, self.inbound_links_scores(rows)),
+                   (4.0, self.pagerank_scores(rows)), (4.0, self.link_text_scores(rows, wordids))]
         
         for (weight, scores) in weights:
             for url in url_totalscore_dct.keys():
@@ -299,11 +330,17 @@ class crawler_and_searcher:
     
     # create database tables and indexes
     def create_index_tables(self):
-        self.con.execute('create table if not exists urllist(url)')
-        self.con.execute('create table if not exists wordlist(word)')
-        self.con.execute('create table if not exists wordlocation(urlid, wordid, location)')
-        self.con.execute('create table if not exists link(fromid integer, toid integer)')
-        self.con.execute('create table if not exists linkwords(wordid, linkid)')
+        self.con.execute('drop table if exists urllist')
+        self.con.execute('drop table if exists wordlist')
+        self.con.execute('drop table if exists wordlocation')
+        self.con.execute('drop table if exists link')
+        self.con.execute('drop table if exists linkwords')
+        
+        self.con.execute('create table urllist(url)')
+        self.con.execute('create table wordlist(word)')
+        self.con.execute('create table wordlocation(urlid, wordid, location)')
+        self.con.execute('create table link(fromid integer, toid integer)')
+        self.con.execute('create table linkwords(wordid, linkid)')
          
         self.con.execute('create index if not exists wordidx on wordlist(word)')
         self.con.execute('create index if not exists urlidx on urllist(url)')
