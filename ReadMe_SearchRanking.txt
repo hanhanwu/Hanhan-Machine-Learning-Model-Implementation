@@ -16,7 +16,7 @@
 a. urllist - stores crawled urls
 b. wordlist - stores all the words
 c. link - stores from_page id and to_page id
-d. linkwords - stores wordid and the relative linkid, the words are in to_pages, this table helps tell what does the inbound urls talk about and help calculate the score of the from_page
+d. linkwords - stores wordid and the relative linkid, the words are in to_pages, this table helps tell what does the from_pages talk about and help calculate the score of the to_page
 e. wordlocation - stores the location of the words in the relative url
 
 4. crawler_and_searcher.py
@@ -51,4 +51,6 @@ Note: The code in multi_words_query() looks complex, but the query is like this:
  When using PageRank, the way we calculate the score (page_score/inbound_links_count) indicates that the score is based how large other pages contribute to this page. For example, Page A has connects to 5 pages but contribute 1 to this page, compared with Page B which just has 1 link and it connects to this page, Page A contributes less to the score of this page.
  But given the seed page, using PageRank in this case, I didn't get the most relative results.
  
- Method 5 -  Now, I can use the created pagerank method to help calculate page scores. Something interesting and also a little weird happened. When I was using my page_rank() to return top scored urls, it didn't give me real relative urls, however, when I have created pagerank_score() method and added it with other methods to calculate combined scores, even if I give pagerank the highest weight, the final result still works well, retuns the top relative pages. So, I think the better way to score urls is to use combined methods and set proper weight to each method. Meanwhile, PageRank stills works well for retuning more general pages, and in this case, it works well.
+ Method 5 - Now, I can use the created pagerank method to help calculate page scores. Something interesting and also a little weird happened. When I was using my page_rank() to return top scored urls, it didn't give me real relative urls, however, when I have created pagerank_score() method and added it with other methods to calculate combined scores, even if I give pagerank the highest weight, the final result still works well, retuns the top relative pages. So, I think the better way to score urls is to use combined methods and set proper weight to each method. Meanwhile, PageRank stills works well for retuning more general pages, and in this case, it works well.
+ 
+ Method 6 - Using the scores from the from_pages of relative urls. Here, relative urls means urls have query key words, aftering finding these urls, find their from_pages, sum up PageRank scores of these from_pages then rescale. In this case, this methods should not have a weight higher than PageRank
