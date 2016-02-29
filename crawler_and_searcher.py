@@ -240,31 +240,8 @@ class crawler_and_searcher:
         inbound_links_dct = dict([(row[0], 
                 self.con.execute('select count(*) from link where toid=%d' % row[0]).fetchone()[0]) for row in rows])
         return self.rescale_scores(inbound_links_dct)
-            
-    
-    # get total score for each returned url
-    def get_url_scores(self, rows, wordids):
-        url_totalscore_dct = dict([(row[0], 0) for row in rows])
-        
-        weights = [(1.0, self.word_frequency_score(rows)), (2.0, self.words_location_scores(rows)), 
-                   (3.0, self.words_distance_scores(rows)), (2.5, self.inbound_links_score(rows))]
-        
-        for (weight, scores) in weights:
-            for url in url_totalscore_dct.keys():
-                url_totalscore_dct[url] += weight*scores[url]
-                
-        return url_totalscore_dct
     
     
-    def get_ranked_urls(self, qry):
-        rows, wordids = self.multi_words_query(qry)
-        url_scores = self.get_url_scores(rows, wordids)
-        
-        ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
-        for (score, url) in ranked_urls[0:10]:
-            print '%f\t%s' % (score, self.get_full_url(url))
-            
-            
     # PageRank            
     def page_rank(self, itr=10):
         # create a new table and initialize the score for each url as 1.0
@@ -287,7 +264,38 @@ class crawler_and_searcher:
         for i in range(5):
             urlid, score = cur.next()
             print self.get_full_url(urlid), score
+            
+            
+    def pagerank_score(self, rows):
+        self.page_rank()
+        pagerank_dct = dict([(row[0], 
+                    self.con.execute('select score from pagerank where urlid=%d' % row[0]).fetchone()[0]) for row in rows])
+        return self.rescale_scores(pagerank_dct)
     
+    
+    # get total score for each returned url
+    def get_url_scores(self, rows, wordids):
+        url_totalscore_dct = dict([(row[0], 0) for row in rows])
+        
+        weights = [(1.0, self.word_frequency_score(rows)), (2.0, self.words_location_scores(rows)), 
+                   (3.0, self.words_distance_scores(rows)), (2.5, self.inbound_links_score(rows)),
+                   (4.0, self.pagerank_score(rows))]
+        
+        for (weight, scores) in weights:
+            for url in url_totalscore_dct.keys():
+                url_totalscore_dct[url] += weight*scores[url]
+                
+        return url_totalscore_dct
+    
+    
+    def get_ranked_urls(self, qry):
+        rows, wordids = self.multi_words_query(qry)
+        url_scores = self.get_url_scores(rows, wordids)
+        
+        ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
+        for (score, url) in ranked_urls[0:10]:
+            print '%f\t%s' % (score, self.get_full_url(url))
+            
     
     # create database tables and indexes
     def create_index_tables(self):
@@ -343,9 +351,6 @@ def main():
      
     # show ranked urls
     mycrawler_searcher.get_ranked_urls(qry)
-    
-    # page rank
-    mycrawler_searcher.page_rank()
     
 if __name__ == '__main__':
     main()
