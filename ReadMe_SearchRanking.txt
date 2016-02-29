@@ -16,7 +16,7 @@
 a. urllist - stores crawled urls
 b. wordlist - stores all the words
 c. link - stores from_page id and to_page id
-d. linkwords - stores wordid and the relative linkid
+d. linkwords - stores wordid and the relative linkid, the words are in to_pages, this table helps tell what does the inbound urls talk about and help calculate the score of the from_page
 e. wordlocation - stores the location of the words in the relative url
 
 4. crawler_and_searcher.py
