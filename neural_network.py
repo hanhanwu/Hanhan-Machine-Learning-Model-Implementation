@@ -23,6 +23,19 @@ class onehidden_nn:
         self.con.execute('create table input_hidden(fromid, toid, strength)')
         self.con.execute('create table hidden_output(fromid, toid, strength)')
         self.con.commit()
+        
+    
+    def get_strength(self, fromid, toid, layer):
+        if layer == 0: tb = 'input_hidden'
+        else: tb = 'hidden_output'
+        
+        cur = self.con.execute("""
+        select strength from %s where fromid=%d and toid=%d
+        """ % (tb, fromid, toid)).fetchone()
+        if cur == None:
+            if layer == 0: return -0.2
+            elif layer == 1: return 0
+        return cur[0]
 
 
 def main():
