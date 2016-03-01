@@ -22,6 +22,12 @@ class onehidden_nn:
         self.con.execute('create table hidden_node(create_key)')
         self.con.execute('create table input_hidden(fromid, toid, strength)')
         self.con.execute('create table hidden_output(fromid, toid, strength)')
+        
+        self.con.execute('create index if not exists hidden_nodeidx on hidden_node(create_key)')
+        self.con.execute('create index if not exists ih_fromidx on input_hidden(fromid)')
+        self.con.execute('create index if not exists ih_toidx on input_hidden(toid)')
+        self.con.execute('create index if not exists ho_fromidx on hidden_output(fromid)')
+        self.con.execute('create index if not exists ho_toidx on hidden_output(toid)')
         self.con.commit()
         
     
