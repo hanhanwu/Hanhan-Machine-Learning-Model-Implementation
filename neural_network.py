@@ -31,6 +31,7 @@ class onehidden_nn:
         self.con.commit()
         
     
+    # get the strength of a connection in input_hidden table or hidden_output table
     def get_strength(self, fromid, toid, layer):
         if layer == 0: tb = 'input_hidden'
         else: tb = 'hidden_output'
@@ -42,6 +43,25 @@ class onehidden_nn:
             if layer == 0: return -0.2
             elif layer == 1: return 0
         return cur[0]
+    
+    
+    # id the connection exists, update the strength, otherwise insert a new connection with the strength value
+    def set_strength(self, fromid, toid, layer, new_strength):
+        if layer == 0: tb = 'input_hidden'
+        else: tb = 'hidden_output'
+        
+        cur = self.con.execute("""
+        select strength from %s where fromid=%d and toid=%d
+        """ % (tb, fromid, toid)).fetchone()
+        if cur == None:
+            self.con.execute("""
+            insert into %s (fromid, toid, strength) values (%d,%d,%f)
+            """ % (fromid, toid, new_strength))
+        else:
+            self.con.execute("""
+            update %s set strength=%f where rowid=%d
+            """ % (tb, new_strength, cur[0]))
+        self.con.commit()
 
 
 def main():
