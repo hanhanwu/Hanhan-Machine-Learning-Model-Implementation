@@ -60,6 +60,7 @@ class crawler_and_searcher:
             if w in ignore_wrods: continue
             wid = self.get_row_id('wordlist', 'word', w)
             self.con.execute('insert into wordlocation (urlid, wordid, location) values (%d,%d,%d)' % (uid, wid, i))
+        self.con.commit()
             
             
     # insert the link connections into link table
@@ -69,7 +70,8 @@ class crawler_and_searcher:
             page_to = pc.page_to
             fromid = self.get_row_id('urllist', 'url', page_from)
             toid = self.get_row_id('urllist', 'url', page_to)
-            cur = self.con.execute('insert into link (fromid, toid) values (%d, %d)' % (fromid, toid))
+            self.con.execute('insert into link (fromid, toid) values (%d, %d)' % (fromid, toid))
+            self.con.commit()
             
     
     def insert_linkwords(self):
@@ -79,6 +81,7 @@ class crawler_and_searcher:
         link join wordlocation wl
         on link.toid = wl.urlid
         """)
+        self.con.commit()
         
         
     # check whether this page url has been indexed in urllist table and wordlocation table
@@ -257,6 +260,7 @@ class crawler_and_searcher:
         self.con.execute('drop table if exists pagerank')
         self.con.execute('create table pagerank(urlid primary key, score)')
         self.con.execute('insert into pagerank select rowid, 1.0 from urllist')
+        self.con.commit()
             
         for i in range(itr):
             print 'iteration ', str(i)
@@ -293,6 +297,7 @@ class crawler_and_searcher:
             where linkwords.wordid=%d
             and link.rowid=linkwords.linkid
             """ % wid)
+            self.con.commit()
             
             for (fromid, toid) in cur:
                 if toid in link_text_dct.keys():
