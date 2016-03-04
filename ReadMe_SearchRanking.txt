@@ -73,4 +73,7 @@ Using Neural Network
   
  * get_strength()
   This method is used to get the current connection strength from table input_hidden or table hidden_output. Since the connections will be built only when necessary, there has to be a default value for the strength if there is no connection yet. For the default strength of the connection between the input layer and the hidden layer, it's -0.2, which means extra query words will have a negative impact on a hidden node.
- 
+  
+ * create_hidden_node()
+  This method will create a hidden node when needed, to make the problem simpler and faster.
+  Once a hidden node has been created, it will connect to its input and its output layers, with default values for each connection.
