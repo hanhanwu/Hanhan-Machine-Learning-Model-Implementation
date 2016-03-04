@@ -45,7 +45,7 @@ class onehidden_nn:
         return cur[0]
     
     
-    # id the connection exists, update the strength, otherwise insert a new connection with the strength value
+    # if the connection exists, update the strength, otherwise insert a new connection with the strength value
     def set_strength(self, fromid, toid, layer, new_strength):
         if layer == 0: tb = 'input_hidden'
         else: tb = 'hidden_output'
@@ -62,6 +62,28 @@ class onehidden_nn:
             update %s set strength=%f where rowid=%d
             """ % (tb, new_strength, cur[0]))
         self.con.commit()
+        
+        
+    def create_hidden_node(self, words, urls):
+        if len(words) > 3: return
+        create_key = '_'.join(sorted([st(wid) for wid in words]))
+        cur = self.con.execute("""
+        select rowid from hidden_node where create_key='%s'
+        """ % create_key).fetchone()
+        
+        if cur == None:
+            cur = self.con.execute("""
+            insert into hidden_node (create_key) values '%s'
+            """ % create_key)
+            hidden_id = cur.lastrowid
+        else:
+            hidden_id = cur[0]
+        for wid in words:
+            self.set_strength(wid, hidden_id, 0, 1.0/len(words))
+        for uid in urls:
+            self.set_strength(hidden_id, uid, 1, 0.1)
+        self.con.commit()
+            
 
 
 def main():
