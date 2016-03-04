@@ -56,7 +56,7 @@ class onehidden_nn:
         if cur == None:
             self.con.execute("""
             insert into %s (fromid, toid, strength) values (%d,%d,%f)
-            """ % (fromid, toid, new_strength))
+            """ % (tb, fromid, toid, new_strength))
         else:
             self.con.execute("""
             update %s set strength=%f where rowid=%d
@@ -66,14 +66,14 @@ class onehidden_nn:
         
     def create_hidden_node(self, words, urls):
         if len(words) > 3: return
-        create_key = '_'.join(sorted([st(wid) for wid in words]))
+        create_key = '_'.join(sorted([str(wid) for wid in words]))
         cur = self.con.execute("""
         select rowid from hidden_node where create_key='%s'
         """ % create_key).fetchone()
         
         if cur == None:
             cur = self.con.execute("""
-            insert into hidden_node (create_key) values '%s'
+            insert into hidden_node (create_key) values ('%s')
             """ % create_key)
             hidden_id = cur.lastrowid
         else:
@@ -87,8 +87,20 @@ class onehidden_nn:
 
 
 def main():
-    dbname = ''
+    dbname = 'neural_network.db'
     my_nn = onehidden_nn(dbname)
+    my_nn.create_tables()
+    
+    wApple, wPhone, wRose = 101, 102, 103
+    wApplePhone, wRoseGold, wPhone, wBanana = 201, 202, 203, 204
+    
+    my_nn.create_hidden_node([wApple, wPhone], [wApplePhone, wRoseGold, wPhone, wBanana])
+    print 'input_hidden:'
+    for cont in my_nn.con.execute('select * from input_hidden'):
+        print cont
+    print 'hidden_output:'
+    for cont in my_nn.con.execute('select * from hidden_output'):
+        print cont
     
 if __name__ == '__main__':
     main()
