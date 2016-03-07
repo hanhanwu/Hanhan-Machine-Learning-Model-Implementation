@@ -77,3 +77,8 @@ Using Neural Network
  * create_hidden_node()
   This method will create a hidden node when needed, to make the problem simpler and faster.
   Once a hidden node has been created, it will connect to its input and its output layers, with default values for each connection.
+  
+ * using feedforward
+  a. Using tanh (sigmoid function) between the input + the hidden layer, and the hidden layer + the output layer. Neural Netwrok often uses sigmoid function to calculate the output of neurons. The output values indicate how much each node should respond to its input.
+  b. The feedforward method will loop over all the nodes in the hidden layer and sum up the output from its input layer multiply the strength of the connections. The output values will be sent to its output layer. The later hidden layers and the final output layers will do the same thing.
+  c. When you are running my code, by just using feedforward, you get the output share the same number, that's becasue the network has not been trained yet, so it will give same answer for each url.
