@@ -3,6 +3,7 @@ Created on Feb 29, 2016
 @author: hanhanwu
 '''
 from sqlite3 import dbapi2 as sqlite
+from sets import Set
 
 
 class onehidden_nn:
@@ -83,6 +84,18 @@ class onehidden_nn:
         for uid in urls:
             self.set_strength(hidden_id, uid, 1, 0.1)
         self.con.commit()
+        
+    
+    # using the input or output ids to find the hidden nodes    
+    def find_hidden_nodes(self, words, urls):
+        hidden_nodes = Set()
+        for wid in words:
+            for (hidden_node,) in self.con.execute('select toid from input_hidden where fromid=%d' % wid):
+                hidden_nodes.add(hidden_node)
+        for uid in urls:
+            for (hidden_node,) in self.con.execute('select fromid from hidden_output where toid=%d' % uid):
+                hidden_nodes.add(hidden_node)
+        return list(hidden_nodes)
             
 
 
