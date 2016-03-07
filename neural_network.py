@@ -4,6 +4,7 @@ Created on Feb 29, 2016
 '''
 from sqlite3 import dbapi2 as sqlite
 from sets import Set
+from math import tanh
 
 
 class onehidden_nn:
@@ -111,7 +112,23 @@ class onehidden_nn:
         # build the weight matrix for input_hidden and hidden_output
         self.w_ih = [[self.get_strength(wid, hid, 0) for hid in self.hidden_nodes] for wid in self.words]
         self.w_ho = [[self.get_strength(hid, uid, 1) for uid in self.urls] for hid in self.hidden_nodes]
+        
+    def feedforward(self, words, urls):
+        self.setup_nn(words, urls)
+        
+        for j in range(len(self.hidden_nodes)):
+            sum = 0.0
+            for i in range(len(self.words)):
+                sum += self.li[i]*self.w_ih[i][j]
+            self.lh[j] = tanh(sum)
             
+        for j in range(len(self.urls)):
+            sum = 0.0
+            for i in range(len(self.hidden_nodes)):
+                sum += self.lh[i]*self.w_ho[i][j]
+            self.lo[j] = tanh(sum)
+            
+        return self.lo
 
 
 def main():
@@ -122,13 +139,20 @@ def main():
     wApple, wPhone, wRose = 101, 102, 103
     wApplePhone, wRoseGold, wPhone, wBanana = 201, 202, 203, 204
     
-    my_nn.create_hidden_node([wApple, wPhone], [wApplePhone, wRoseGold, wPhone, wBanana])
+    words = [wApple, wPhone]
+    urls = [wApplePhone, wRoseGold, wPhone, wBanana]
+    
+    my_nn.create_hidden_node(words, urls)
     print 'input_hidden:'
     for cont in my_nn.con.execute('select * from input_hidden'):
         print cont
     print 'hidden_output:'
     for cont in my_nn.con.execute('select * from hidden_output'):
         print cont
+        
+    print 'results after feedforward:'
+    feedforward_output = my_nn.feedforward(words, urls)
+    print feedforward_output
     
 if __name__ == '__main__':
     main()
