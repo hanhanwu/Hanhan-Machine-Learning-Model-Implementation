@@ -96,6 +96,21 @@ class onehidden_nn:
             for (hidden_node,) in self.con.execute('select fromid from hidden_output where toid=%d' % uid):
                 hidden_nodes.add(hidden_node)
         return list(hidden_nodes)
+    
+    
+    # setup neural network
+    def setup_nn(self, words, urls):
+        self.words = words
+        self.urls = urls
+        self.hidden_nodes = self.find_hidden_nodes(words, urls)
+        
+        self.li = [1.0]*len(self.words)
+        self.lo = [1.0]*len(self.urls)
+        self.lh = [1.0]*len(self.hidden_nodes)
+        
+        # build the weight matrix for input_hidden and hidden_output
+        self.w_ih = [[self.get_strength(wid, hid, 0) for hid in self.hidden_nodes] for wid in self.words]
+        self.w_ho = [[self.get_strength(hid, uid, 1) for uid in self.urls] for hid in self.hidden_nodes]
             
 
 
