@@ -172,17 +172,7 @@ class onehidden_nn:
                 
                 
     def train_nn(self, words, urls, selected_url):
-        print '********create hidden nodes********'
-        self.create_hidden_node(words, urls)
-        print 'input_hidden:'
-        for cont in self.con.execute('select * from input_hidden'):
-            print cont
-        print 'hidden_output:'
-        for cont in self.con.execute('select * from hidden_output'):
-            print cont
-        
         print '********feedforward********'
-        self.setup_nn(words, urls)
         feedforward_output = self.feedforward(words, urls)
         print feedforward_output
         
@@ -206,9 +196,26 @@ def main():
     
     words = [wApple, wPhone]
     urls = [wApplePhone, wRoseGold, wPhone, wBanana]
-    selected_url = wApplePhone
+    selected_url1 = wApplePhone
+    selected_url2 = wRoseGold
     
-    my_nn.train_nn(words, urls, selected_url)
+    print '********create hidden nodes********'
+    my_nn.create_hidden_node(words, urls)
+    print 'input_hidden:'
+    for cont in my_nn.con.execute('select * from input_hidden'):
+        print cont
+    print 'hidden_output:'
+    for cont in my_nn.con.execute('select * from hidden_output'):
+        print cont
+        
+    print '********setup NN********'
+    my_nn.setup_nn(words, urls)
+    
+    my_nn.train_nn(words, urls, selected_url1)
+    print '\n'
+    my_nn.train_nn(words, urls, selected_url2)
+    print '\n'
+    my_nn.train_nn([wApple], urls, wPhone)
     
 if __name__ == '__main__':
     main()
