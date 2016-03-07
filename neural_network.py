@@ -6,6 +6,10 @@ from sqlite3 import dbapi2 as sqlite
 from sets import Set
 from math import tanh
 
+# the slope of the function for any output y
+# the output determines how much a node's total input ha to change
+def dtanh(y):
+    return 1.0 - y*y
 
 class onehidden_nn:
     def __init__(self, dbname):
@@ -53,7 +57,7 @@ class onehidden_nn:
         else: tb = 'hidden_output'
         
         cur = self.con.execute("""
-        select strength from %s where fromid=%d and toid=%d
+        select rowid from %s where fromid=%d and toid=%d
         """ % (tb, fromid, toid)).fetchone()
         if cur == None:
             self.con.execute("""
@@ -114,7 +118,6 @@ class onehidden_nn:
         self.w_ho = [[self.get_strength(hid, uid, 1) for uid in self.urls] for hid in self.hidden_nodes]
         
     def feedforward(self, words, urls):
-        self.setup_nn(words, urls)
         
         for j in range(len(self.hidden_nodes)):
             sum = 0.0
@@ -129,6 +132,68 @@ class onehidden_nn:
             self.lo[j] = tanh(sum)
             
         return self.lo
+    
+    
+    def backpropagrate(self, targets, N=0.5):
+        output_deltas = [0.0]*len(self.urls)
+        hidden_deltas = [0.0]*len(self.words)
+        
+        for i in range(len(self.urls)):
+            err = targets[i] - self.lo[i]
+            output_deltas[i] = dtanh(self.lo[i])*err
+        
+        for j in range(len(self.hidden_nodes)):
+            sum_err = 0.0
+            for k in range(len(self.urls)):
+                sum_err += output_deltas[k]*self.w_ho[j][k]
+            hidden_deltas[j] = dtanh(self.lh[j])*sum_err
+            
+        # update hidden_output weights
+        for i in range(len(self.hidden_nodes)):
+            for j in range(len(self.urls)):
+                change = output_deltas[j]*self.lh[i]
+                self.w_ho[i][j] += change*N
+        
+        #  update input_hidden weights
+        for i in range(len(self.words)):
+            for j in range(len(self.hidden_nodes)):
+                change = hidden_deltas[j]*self.li[i]
+                self.w_ih[i][j] += change*N
+        
+        
+    def update_db(self):
+        for i in range(len(self.words)):
+            for j in range(len(self.hidden_nodes)):
+                self.set_strength(self.words[i], self.hidden_nodes[j], 0, self.w_ih[i][j])
+        
+        for i in range(len(self.hidden_nodes)):
+            for j in range(len(self.urls)):
+                self.set_strength(self.hidden_nodes[i], self.urls[j], 1, self.w_ho[i][j])
+                
+                
+    def train_nn(self, words, urls, selected_url):
+        print '********create hidden nodes********'
+        self.create_hidden_node(words, urls)
+        print 'input_hidden:'
+        for cont in self.con.execute('select * from input_hidden'):
+            print cont
+        print 'hidden_output:'
+        for cont in self.con.execute('select * from hidden_output'):
+            print cont
+        
+        print '********feedforward********'
+        self.setup_nn(words, urls)
+        feedforward_output = self.feedforward(words, urls)
+        print feedforward_output
+        
+        print '********backpropagrate********'
+        targets = [0.0]*len(urls)
+        targets[urls.index(selected_url)] = 1.0
+        
+        self.backpropagrate(targets)
+        self.update_db()
+        results = self.feedforward(words, urls)
+        print results
 
 
 def main():
@@ -141,18 +206,9 @@ def main():
     
     words = [wApple, wPhone]
     urls = [wApplePhone, wRoseGold, wPhone, wBanana]
+    selected_url = wApplePhone
     
-    my_nn.create_hidden_node(words, urls)
-    print 'input_hidden:'
-    for cont in my_nn.con.execute('select * from input_hidden'):
-        print cont
-    print 'hidden_output:'
-    for cont in my_nn.con.execute('select * from hidden_output'):
-        print cont
-        
-    print 'results after feedforward:'
-    feedforward_output = my_nn.feedforward(words, urls)
-    print feedforward_output
+    my_nn.train_nn(words, urls, selected_url)
     
 if __name__ == '__main__':
     main()
