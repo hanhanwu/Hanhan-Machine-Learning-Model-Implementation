@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 from sets import Set
 import re
 from nltk.stem.porter import *
+import neural_network as nn
+
 
 class PageConnection:
     def __init__(self, page_from, page_to):
@@ -331,6 +333,7 @@ class crawler_and_searcher:
         ranked_urls = sorted([(score, url) for (url, score) in url_scores.items()], reverse=1)
         for (score, url) in ranked_urls[0:10]:
             print '%f\t%s' % (score, self.get_full_url(url))
+        return [r[1] for r in ranked_urls[0:10]]
             
     
     # create database tables and indexes
@@ -392,7 +395,28 @@ def main():
     print wordids
      
     # show ranked urls
-    mycrawler_searcher.get_ranked_urls(qry)
+    ranked_urls = mycrawler_searcher.get_ranked_urls(qry)
+    
+    nn_dbname = 'neural_network.db'
+    my_nn = nn.onehidden_nn(dbname)
+    my_nn.create_tables()
+    
+    print '********create hidden nodes********'
+    rows = [r[0] for r in rows]
+    my_nn.create_hidden_node(wordids, rows)
+    print 'input_hidden:'
+    for cont in my_nn.con.execute('select * from input_hidden'):
+        print cont
+    print 'hidden_output:'
+    for cont in my_nn.con.execute('select * from hidden_output'):
+        print cont
+        
+    print '********setup NN********'
+    my_nn.setup_nn(wordids, rows)
+    
+    for selected_url in ranked_urls:
+        my_nn.train_nn(wordids, rows, selected_url)
+        print '\n'
     
 if __name__ == '__main__':
     main()
