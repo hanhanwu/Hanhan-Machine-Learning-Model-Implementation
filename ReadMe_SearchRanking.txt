@@ -89,3 +89,5 @@ Using Neural Network
   c. For output layer, backpropagete calculate the differences between current output and the real results. In the real results, values set to 1.0 means users clicked the url, otherwise the values are 0.0. Then multiply the difference and the dtanh(y) to determine how much the node's total input should be changed. Finally update the hidden_output weights based on the product of liearning rate and the how much change should be done.
   d. For hidden layer, the weights update is similar with the updates in output layer, the only difference is when calculating the differences, it sums up the product of an output node difference and the hidden_output weight.
   e. Each time when NN does backpropagate, it is using the known weights instead of updated weights, so errors are calculated in advance.
+  
+ Finally, connect the neural network with the search engine, in crawler_and_searcher.py
