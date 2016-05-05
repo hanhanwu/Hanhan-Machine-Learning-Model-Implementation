@@ -1,0 +1,120 @@
+Hawaii,Shanghai,6:19,8:13,239
+Shanghai,Hawaii,6:11,8:31,249
+Hawaii,Shanghai,8:04,10:59,136
+Shanghai,Hawaii,7:39,10:24,219
+Hawaii,Shanghai,9:31,11:43,210
+Shanghai,Hawaii,9:15,12:03,99
+Hawaii,Shanghai,11:07,13:24,171
+Shanghai,Hawaii,11:08,13:07,175
+Hawaii,Shanghai,12:31,14:02,234
+Shanghai,Hawaii,12:18,14:56,172
+Hawaii,Shanghai,14:05,15:47,226
+Shanghai,Hawaii,13:37,15:08,250
+Hawaii,Shanghai,15:07,17:21,129
+Shanghai,Hawaii,15:03,16:42,135
+Hawaii,Shanghai,16:35,18:56,144
+Shanghai,Hawaii,16:51,19:09,147
+Hawaii,Shanghai,18:25,20:34,205
+Shanghai,Hawaii,18:12,20:17,242
+Hawaii,Shanghai,20:05,21:44,172
+Shanghai,Hawaii,20:05,22:06,261
+Hawaii,Taiwan,6:03,8:43,219
+Taiwan,Hawaii,6:05,8:32,174
+Hawaii,Taiwan,7:50,10:08,164
+Taiwan,Hawaii,8:25,10:34,157
+Hawaii,Taiwan,9:11,10:42,172
+Taiwan,Hawaii,9:42,11:32,169
+Hawaii,Taiwan,10:33,13:11,132
+Taiwan,Hawaii,11:01,12:39,260
+Hawaii,Taiwan,12:08,14:47,231
+Taiwan,Hawaii,12:44,14:17,134
+Hawaii,Taiwan,14:19,17:09,190
+Taiwan,Hawaii,14:22,16:32,126
+Hawaii,Taiwan,15:04,17:23,189
+Taiwan,Hawaii,15:58,18:40,173
+Hawaii,Taiwan,17:06,20:00,95
+Taiwan,Hawaii,16:43,19:00,246
+Hawaii,Taiwan,18:33,20:22,143
+Taiwan,Hawaii,18:48,21:45,246
+Hawaii,Taiwan,19:32,21:25,160
+Taiwan,Hawaii,19:50,22:24,269
+Hawaii,Surrey,6:33,9:14,172
+Surrey,Hawaii,6:25,9:30,335
+Hawaii,Surrey,8:23,11:07,143
+Surrey,Hawaii,7:34,9:40,324
+Hawaii,Surrey,9:25,12:46,295
+Surrey,Hawaii,9:15,12:29,225
+Hawaii,Surrey,11:08,14:38,262
+Surrey,Hawaii,11:28,14:40,248
+Hawaii,Surrey,12:37,15:05,170
+Surrey,Hawaii,12:05,15:30,330
+Hawaii,Surrey,14:08,16:09,232
+Surrey,Hawaii,14:01,17:24,338
+Hawaii,Surrey,15:23,18:49,150
+Surrey,Hawaii,15:34,18:11,326
+Hawaii,Surrey,16:50,19:26,304
+Surrey,Hawaii,17:07,20:04,291
+Hawaii,Surrey,18:07,21:30,355
+Surrey,Hawaii,18:23,21:35,134
+Hawaii,Surrey,20:27,23:42,169
+Surrey,Hawaii,19:53,22:21,173
+Hawaii,LA,6:39,8:09,86
+LA,Hawaii,6:17,8:26,89
+Hawaii,LA,8:23,10:28,149
+LA,Hawaii,8:04,10:11,95
+Hawaii,LA,9:58,11:18,130
+LA,Hawaii,9:45,11:50,172
+Hawaii,LA,10:33,12:03,74
+LA,Hawaii,11:16,13:29,83
+Hawaii,LA,12:08,14:05,142
+LA,Hawaii,12:34,15:02,109
+Hawaii,LA,13:39,15:30,74
+LA,Hawaii,13:40,15:37,138
+Hawaii,LA,15:25,16:58,62
+LA,Hawaii,15:27,17:18,151
+Hawaii,LA,17:03,18:03,103
+LA,Hawaii,17:11,18:30,108
+Hawaii,LA,18:24,20:49,124
+LA,Hawaii,18:34,19:36,136
+Hawaii,LA,19:58,21:23,142
+LA,Hawaii,20:17,22:22,102
+Hawaii,Vancouver,6:09,9:49,414
+Vancouver,Hawaii,6:12,10:22,230
+Hawaii,Vancouver,7:57,11:15,347
+Vancouver,Hawaii,7:53,11:37,433
+Hawaii,Vancouver,9:49,13:51,229
+Vancouver,Hawaii,9:08,12:12,364
+Hawaii,Vancouver,10:51,14:16,256
+Vancouver,Hawaii,10:30,14:57,290
+Hawaii,Vancouver,12:20,16:34,500
+Vancouver,Hawaii,12:19,15:25,342
+Hawaii,Vancouver,14:20,17:32,332
+Vancouver,Hawaii,13:54,18:02,294
+Hawaii,Vancouver,15:49,20:10,497
+Vancouver,Hawaii,15:44,18:55,382
+Hawaii,Vancouver,17:14,20:59,277
+Vancouver,Hawaii,16:52,20:48,448
+Hawaii,Vancouver,18:44,22:42,351
+Vancouver,Hawaii,18:26,21:29,464
+Hawaii,Vancouver,19:57,23:15,512
+Vancouver,Hawaii,20:07,23:27,473
+Hawaii,San Francisco,6:58,9:01,238
+San Francisco,Hawaii,6:08,8:06,224
+Hawaii,San Francisco,8:19,11:16,122
+San Francisco,Hawaii,8:27,10:45,139
+Hawaii,San Francisco,9:58,12:56,249
+San Francisco,Hawaii,9:15,12:14,247
+Hawaii,San Francisco,10:32,13:16,139
+San Francisco,Hawaii,10:53,13:36,189
+Hawaii,San Francisco,12:01,13:41,267
+San Francisco,Hawaii,12:08,14:59,149
+Hawaii,San Francisco,13:37,15:33,142
+San Francisco,Hawaii,13:40,15:38,137
+Hawaii,San Francisco,15:50,18:45,243
+San Francisco,Hawaii,15:23,17:25,232
+Hawaii,San Francisco,16:33,18:15,253
+San Francisco,Hawaii,17:08,19:08,262
+Hawaii,San Francisco,18:17,21:04,259
+San Francisco,Hawaii,18:35,20:28,204
+Hawaii,San Francisco,19:46,21:45,214
+San Francisco,Hawaii,20:30,23:11,114
