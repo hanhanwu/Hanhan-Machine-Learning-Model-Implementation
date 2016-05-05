@@ -15,3 +15,6 @@ Implement different type of machine learning models to deal with practical probl
  * I am creating a basic search engine in this part of code, and there are 4 steps:
    crawling, indexing, ranking, building neural network for ranking queries
  * Check ReadMe_SearchRanking.txt for all the details.
+ 
+4. Optimization
+ * Check ReadMe_Optimization.md for all the details: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/ReadMe_Optimization.md
