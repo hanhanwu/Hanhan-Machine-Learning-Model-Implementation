@@ -7,15 +7,6 @@ Need to find a way to minimize the cost (flight cost, car renting cost, waiting 
 This file is to create such a dataset first
 '''
 
-import time
-import random
-import math
-
-def get_mins(t):
-    ts = time.strptime(t, "%H:%M")
-    return ts[3]*60 + ts[4]
-
-
 def get_people_location():
     people = [
               ('Emmanuel', 'LA'),
