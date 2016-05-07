@@ -5,6 +5,7 @@ Created on May 5, 2016
 '''
 import create_group_schedule_data as data_source
 import time
+import opt_random_searching
 
 
 def get_mins(t):
@@ -65,10 +66,21 @@ def main():
     flights = data_source.get_fights(flights_path)
     people, dest = data_source.get_people_location()
     
+    print 'test solution'
     test_solution = [4,1,3,7,2,3,6,3,4,2,5,3]
     get_solutions(test_solution, dest, people, flights)
     total_cost = get_cost(test_solution, dest, people, flights)
     print total_cost
+    
+    # OPTIMIZATION SOLUTIONS
+    print '----------OPTIMIZATION---------'
+    # optimization method 1: random search
+    # each time, the result can be different since it's random
+    print 'Random Search'
+    domain = [(0,8)]*len(people)*2
+    opt_solution, opt_cost = opt_random_searching.random_search(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
     
 if __name__ == '__main__':
     main()
