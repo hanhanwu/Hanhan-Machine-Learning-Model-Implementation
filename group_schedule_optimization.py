@@ -6,6 +6,7 @@ Created on May 5, 2016
 import create_group_schedule_data as data_source
 import time
 import opt_random_searching
+import opt_hill_climbing
 
 
 def get_mins(t):
@@ -62,7 +63,7 @@ def get_cost(slst, dest, people, flights):
 
 
 def main():
-    flights_path = "[your flights.txt path]"
+    flights_path = "[ your flights.txt path ]"
     flights = data_source.get_fights(flights_path)
     people, dest = data_source.get_people_location()
     
@@ -74,13 +75,23 @@ def main():
     
     # OPTIMIZATION SOLUTIONS
     print '----------OPTIMIZATION---------'
+    domain = [(0,8)]*len(people)*2
+    
     # optimization method 1: random search
     # each time, the result can be different since it's random
     print 'Random Search'
-    domain = [(0,8)]*len(people)*2
     opt_solution, opt_cost = opt_random_searching.random_search(domain, get_cost, dest, people, flights)
     get_solutions(opt_solution, dest, people, flights)
     print opt_cost
+    print
+    
+    # optimization method 2: hill climbing
+    # each time, the result can be different since its initial is random
+    print 'Hill Climbing'
+    opt_solution, opt_cost = opt_hill_climbing.hill_climbing(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
     
 if __name__ == '__main__':
     main()
