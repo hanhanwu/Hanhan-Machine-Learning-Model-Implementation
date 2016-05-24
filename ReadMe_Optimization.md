@@ -12,3 +12,19 @@ Optimization Problems
   * Optimization Methods
   
   -- Random Search: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_random_search.py
+  
+  * Random Search should serve as the base line of optimization methods.
+  
+
+ -- Hill Climbing
+ 
+  * Hill climbing starts from a random solution, looking for better neighbor solutions
+ In this process, it walks in the most steep slope till it reached a flat point
+ This method will find local optimum but may not be global optimum.
+
+ -- Simulated Annealing
+  
+  * When the cost is higher, the new solution can still become the current solution with certain probability.
+This aims at avoiding local optimum.
+The temperature - willingness to accept a worse solution
+When the temperature decreases, the probability of accepting a worse solution is less
