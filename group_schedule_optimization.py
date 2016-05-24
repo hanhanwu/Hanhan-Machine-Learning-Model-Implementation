@@ -93,5 +93,13 @@ def main():
     print opt_cost
     print
     
+    # optimization 3: simulated annealing  (avoid local optimum)
+    # each time, the result can be different since its initial is random
+    print 'Simulated Annealing'
+    opt_solution, opt_cost = opt_simulated_annealing.simulated_annealing(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
+    
 if __name__ == '__main__':
     main()
