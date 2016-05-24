@@ -16,13 +16,14 @@ Optimization Problems
   * Random Search should serve as the base line of optimization methods.
   
 
- -- Hill Climbing
+ -- Hill Climbing: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_hill_climbing.py
  
   * Hill climbing starts from a random solution, looking for better neighbor solutions
  In this process, it walks in the most steep slope till it reached a flat point
  This method will find local optimum but may not be global optimum.
 
- -- Simulated Annealing
+
+ -- Simulated Annealing: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_simulated_annealing.py
   
   * When the cost is higher, the new solution can still become the current solution with certain probability.
 This aims at avoiding local optimum.
