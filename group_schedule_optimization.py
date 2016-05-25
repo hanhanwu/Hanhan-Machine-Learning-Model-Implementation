@@ -101,5 +101,13 @@ def main():
     print opt_cost
     print
     
+    # optimization 4: genetic algorithms (avoid local optimum)
+    # each time, the result can be different since its initial is random
+    print 'Genetic Algorithms'
+    opt_solution, opt_cost = opt_genetic_alg.genetic_alg(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
+    
 if __name__ == '__main__':
     main()
