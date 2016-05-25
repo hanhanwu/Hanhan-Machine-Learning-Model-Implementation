@@ -1,58 +1,116 @@
 '''
-Created on May 24, 2016
-Genetics Algorithm
-elitism - choose the top solutions in current generation into the next generation
-The rest solutions in the new generation are created by modifying the current top solutions:
-    mutation - a small, random change on an existing solution
-    crossover/breeding - combine 2 of the current top solutions
-The new population has the same size as the old one
+Created on May 5, 2016
+
+@author: hanhanwu
 '''
-
-import random
-
-def mutation(solution_vec, domain, step):
-    random_idx = random.randint(0, len(solution_vec)-1)
-    if random.random() < 0.5 and solution_vec[random_idx] > domain[random_idx][0]:
-        solution_vec[random_idx] -= step
-    elif solution_vec[random_idx] < domain[random_idx][1]:
-        solution_vec[random_idx] += step
-    return solution_vec
+import create_group_schedule_data as data_source
+import time
+import opt_random_searching
+import opt_hill_climbing
+import opt_simulated_annealing
+import opt_genetic_alg
 
 
-def crossover(svec1, svec2):
-    random_idx = random.randint(1, len(svec1)-2)
-    return svec1[0:random_idx]+svec2[random_idx:]
+def get_mins(t):
+    ts = time.strptime(t, "%H:%M")
+    return ts[3]*60 + ts[4]
+
+
+def get_solutions(slst, dest, people, flights):
+    for i in range(len(people)):
+        p = people[i][0]
+        origin = people[i][1]
+        idx1 = slst[i*2]
+        idx2 = slst[i*2+1]
+        arrival = flights[(origin, dest)][idx1]
+        leave = flights[(dest, origin)][idx2]
+        print '%10s  %15s: arrive flight %5s %5s $%3s  return flight %5s %5s $%3s'\
+        % (p, origin, arrival[0], arrival[1], arrival[2], leave[0], leave[1], leave[2])
+        
+
+# In this case, assuming waiting for 1 minute equals to cost $5 for normal people but $10 for Emmanuel :)
+# Assuming this group of people will wait at the airport till everyone got there, later will leave the airport on the same day
+def get_cost(slst, dest, people, flights):
+    total_cost = 0
+    last_arrival = 0
+    first_leave = 24*60
+    
+    for i in range(len(people)):
+        p = people[i][0]
+        origin = people[i][1]
+        idx1 = slst[i*2]
+        idx2 = slst[i*2+1]
+        arrival = flights[(origin, dest)][idx1]
+        leave = flights[(dest, origin)][idx2]
+        arrive_time = get_mins(arrival[1])
+        leave_time = get_mins(leave[0])
+        total_cost += (arrival[2]+leave[2])
+        if last_arrival < arrive_time: last_arrival = arrive_time
+        if first_leave > leave_time: first_leave = leave_time
+        
+    for i in range(len(people)):
+        p = people[i][0]
+        origin = people[i][1]
+        idx1 = slst[i*2]
+        idx2 = slst[i*2+1]
+        arrival = flights[(origin, dest)][idx1]
+        leave = flights[(dest, origin)][idx2]
+        arrive_time = get_mins(arrival[1])
+        leave_time = get_mins(leave[0])
+        waiting_time = (last_arrival - arrive_time) + (leave_time - first_leave)
+        if p == "Emmanuel": total_cost += 10*waiting_time
+        else: total_cost += 5*waiting_time
+        
+    return total_cost
+
+
+def main():
+    flights_path = "/Users/hanhanwu/Desktop/flights.txt"
+    flights = data_source.get_fights(flights_path)
+    people, dest = data_source.get_people_location()
+    
+    print 'test solution'
+    test_solution = [4,1,3,7,2,3,6,3,4,2,5,3]
+    get_solutions(test_solution, dest, people, flights)
+    total_cost = get_cost(test_solution, dest, people, flights)
+    print total_cost
+    
+    # OPTIMIZATION SOLUTIONS
+    print '----------OPTIMIZATION---------'
+    domain = [(0,8)]*len(people)*2
+    
+    # optimization method 1: random search
+    # each time, the result can be different since it's random
+    print 'Random Search'
+    opt_solution, opt_cost = opt_random_searching.random_search(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
+    
+    # optimization method 2: hill climbing
+    # each time, the result can be different since its initial is random
+    print 'Hill Climbing'
+    opt_solution, opt_cost = opt_hill_climbing.hill_climbing(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
+    
+    # optimization 3: simulated annealing  (avoid local optimum)
+    # each time, the result can be different since its initial is random
+    print 'Simulated Annealing'
+    opt_solution, opt_cost = opt_simulated_annealing.simulated_annealing(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
+    
+    # optimization 4: genetic algorithms (avoid local optimum)
+    # each time, the result can be different since its initial is random
+    print 'Genetic Algorithms'
+    opt_solution, opt_cost = opt_genetic_alg.genetic_alg(domain, get_cost, dest, people, flights)
+    get_solutions(opt_solution, dest, people, flights)
+    print opt_cost
+    print
     
     
-
-def genetic_alg(domain, costf, dest, people, flights, step = 1, 
-                population = 50, mutation_prob = 0.2, elite = 0.2, max_iter = 100):
-    pop = []
-    top_soutions = population*elite
-    # random initialization
-    for i in range(population):
-        svec = [random.randint(domain[i][0], domain[i][1]) for i in range(len(domain))]
-        pop.append(svec)
-        
-    for k in range(max_iter):
-        scores = [(costf(pop[i], dest, people, flights), i) for i in range(population)]
-        scores.sort()
-        ranked_idx = [i for (c,i) in scores]
-        
-        new_pop = [pop[i] for i in ranked_idx[0:top_soutions]]
-        
-        while len(new_pop) < population:
-            if random.random() < mutation_prob:
-                ridx = random.randint(0, population-1)
-                new_pop.append(mutation(pop[ridx], domain, step))
-            else:
-                ridx1 = random.randint(0, population-1)
-                ridx2 = random.randint(0, population-1)
-                new_pop.apend(crossover(pop[ridx1], pop[ridx2]))
-        pop = new_pop
-        
-    return pop[0]
-    
-    
-
-
+if __name__ == '__main__':
+    main()
