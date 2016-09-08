@@ -31,14 +31,18 @@ The temperature - willingness to accept a worse solution
 When the temperature decreases, the probability of accepting a worse solution is less
 
 
--- Genetic Algorithms: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_genetic_alg.py
+ -- Genetic Algorithms: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_genetic_alg.py
 
- * elitism - choose the top solutions in current generation into the next generation
- * The rest solutions in the new generation are created by modifying the current top solutions:
-    mutation - a small, random change on an existing solution
-    crossover/breeding - combine 2 of the current top solutions
- * The new population has the same size as the old one
- * Aims at avoiding local optimum.
+  * elitism - choose the top solutions in current generation into the next generation
+  * The rest solutions in the new generation are created by modifying the current top solutions:
+     mutation - a small, random change on an existing solution
+     crossover/breeding - combine 2 of the current top solutions
+  * The new population has the same size as the old one
+  * Aims at avoiding local optimum.
+
+ * It seems that Gentic Algorithms works far better than the other 3 optimization methods in this case.
 
 
-* It seems that Gentic Algorithms works far better than the other 3 optimization methods in this case.
+* Optimal Assignment Problem
+ 
+ * A simple poker game group assignment implementation: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/poker_friends.py
