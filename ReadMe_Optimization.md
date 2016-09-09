@@ -43,6 +43,12 @@ When the temperature decreases, the probability of accepting a worse solution is
  * It seems that Gentic Algorithms works far better than the other 3 optimization methods in this case.
 
 
+* General Optimization Algorithms
+
+ * The algorithms I implemented above are too specific to the group travel problem. I am re-writing code here, hoping to ake the algorithms server for border purposes.
+ * genetic algorithm general: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/genetic_alg.general.py
+
+
 * Optimal Assignment Problem
  
  * A simple poker game group assignment implementation: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/poker_friends.py
