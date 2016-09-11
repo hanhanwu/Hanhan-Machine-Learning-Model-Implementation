@@ -64,7 +64,7 @@ def main():
     game_groups = ["fire", "water", "earth", "wind", "void"]
     top_choices = [
                    ("Hanhan", ("fire", "water")),
-                   ("Baby_Emmanuel", ("water", "void")),
+                   ("Cherry", ("water", "void")),
                    ("Yan", ("earth", "wind")),
                    ("Laura", ("fire", "wind")),
                    ("Big_Sea", ("void", "earth")),
@@ -78,20 +78,6 @@ def main():
     optimal_vec = optimal_assign(top_choices, game_groups)
     print_solution(top_choices, game_groups, optimal_vec)
     
-    """
-    Output: Baby_Emmanuel and Hanhan, in the same group! 
-    
-    Hanhan: water
-    Baby_Emmanuel: water
-    Yan: earth
-    Laura: void
-    Big_Sea: earth
-    Andrew: void
-    Albert: wind
-    Alice: wind
-    Uzma: fire
-    Einstein: fire
-    """
     
 if __name__ == "__main__":
     main()
