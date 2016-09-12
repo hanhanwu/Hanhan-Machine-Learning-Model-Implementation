@@ -51,4 +51,4 @@ When the temperature decreases, the probability of accepting a worse solution is
 
 * Optimal Assignment Problem
  
- * A simple poker game group assignment implementation: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/poker_friends.py
+ * A simple poker game group assignment implementation, using random search and genetic algorithm for optimization: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_poker_friends.py
