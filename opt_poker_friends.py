@@ -6,7 +6,23 @@ How to make groups to make the largest amount of people happy is an optimization
 '''
 import random
 import sys
-from networkx.algorithms.flow.mincost import cost_of_flow
+import genetic_alg_general
+
+
+game_groups = ["fire", "water", "earth", "wind", "void"]
+top_choices = [
+                   ("Hanhan", ("fire", "water")),
+                   ("Cherry", ("water", "void")),
+                   ("Yan", ("earth", "wind")),
+                   ("Laura", ("fire", "wind")),
+                   ("Big_Sea", ("void", "earth")),
+                   ("Andrew", ("wind", "void")),
+                   ("Albert", ("wind", "earth")),
+                   ("Alice", ("water", "wind")),
+                   ("Uzma", ("fire", "void")),
+                   ("Einstein", ("fire", "earth"))
+               ]
+
 
 # randomly assign empty slot but guarantee each gamer get an available slot, and all slots will be used
 def random_assign(num_group, num_top_choice):
@@ -25,9 +41,8 @@ def random_assign(num_group, num_top_choice):
 
 
 # the cost function
-def assign_cost(assign_vec, top_choices, game_groups):
+def assign_cost(assign_vec):
     cost = 0
-    
     for a in range(len(assign_vec)):
         assigned_group = game_groups[assign_vec[a]]
         gamer_choices = top_choices[a][1]
@@ -38,7 +53,8 @@ def assign_cost(assign_vec, top_choices, game_groups):
     return cost
 
 
-def optimal_assign(top_choices, game_groups, max_iter = 1000):
+# random search optimization
+def optimal_assign(max_iter = 1000):
     optimal_vec = None
     min_cost = sys.maxint
     num_group = len(game_groups)
@@ -46,7 +62,7 @@ def optimal_assign(top_choices, game_groups, max_iter = 1000):
     
     for k in range(max_iter):
         assign_vec = random_assign(num_group, num_top_choice)
-        cost = assign_cost(assign_vec, top_choices, game_groups)
+        cost = assign_cost(assign_vec)
         if cost < min_cost:
             optimal_vec = assign_vec
             min_cost = cost
@@ -54,30 +70,24 @@ def optimal_assign(top_choices, game_groups, max_iter = 1000):
     return optimal_vec
 
 
-def print_solution(top_choices, game_groups, optimal_vec):
+def print_solution(optimal_vec):
     for a in range(len(optimal_vec)):
         print top_choices[a][0] + ': ' + game_groups[optimal_vec[a]]
 
 
 
 def main():
-    game_groups = ["fire", "water", "earth", "wind", "void"]
-    top_choices = [
-                   ("Hanhan", ("fire", "water")),
-                   ("Cherry", ("water", "void")),
-                   ("Yan", ("earth", "wind")),
-                   ("Laura", ("fire", "wind")),
-                   ("Big_Sea", ("void", "earth")),
-                   ("Andrew", ("wind", "void")),
-                   ("Albert", ("wind", "earth")),
-                   ("Alice", ("water", "wind")),
-                   ("Uzma", ("fire", "void")),
-                   ("Einstein", ("fire", "earth"))
-                   ]
+    # random search optimization
+    optimal_vec = optimal_assign()
+    print_solution(optimal_vec)
     
-    optimal_vec = optimal_assign(top_choices, game_groups)
-    print_solution(top_choices, game_groups, optimal_vec)
     
+    # ************* try genetic optimization****************#
+    num_slots = len(top_choices)
+    domain = [(0,len(game_groups)-1)]*num_slots
+    
+    genetic_optimal_vec = genetic_alg_general.genetic_alg_general(domain, assign_cost)[1]
+    print_solution(genetic_optimal_vec)
     
 if __name__ == "__main__":
     main()
