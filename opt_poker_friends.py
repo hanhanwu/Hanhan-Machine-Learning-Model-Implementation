@@ -7,6 +7,7 @@ How to make groups to make the largest amount of people happy is an optimization
 import random
 import sys
 import genetic_alg_general
+import simulated_annealing_general
 
 
 game_groups = ["fire", "water", "earth", "wind", "void"]
@@ -81,13 +82,18 @@ def main():
     optimal_vec = optimal_assign()
     print_solution(optimal_vec)
     
-    
-    # ************* try genetic optimization****************#
     num_slots = len(top_choices)
     domain = [(0,len(game_groups)-1)]*num_slots
     
+    # ************* try genetic optimization ****************#
+    
     genetic_optimal_vec = genetic_alg_general.genetic_alg_general(domain, assign_cost)[1]
     print_solution(genetic_optimal_vec)
+      
+    # ************ try simulated annealing ****************#
+    sa_optimal_vec, optimal_cost = simulated_annealing_general.simulated_annealing(domain, assign_cost)
+    print optimal_cost
+    print_solution(sa_optimal_vec)
     
 if __name__ == "__main__":
     main()
