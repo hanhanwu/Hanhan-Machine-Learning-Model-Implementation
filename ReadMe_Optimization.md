@@ -46,7 +46,8 @@ When the temperature decreases, the probability of accepting a worse solution is
 * General Optimization Algorithms
 
  * The algorithms I implemented above are too specific to the group travel problem. I am re-writing code here, hoping to ake the algorithms server for border purposes.
- * genetic algorithm general: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/genetic_alg.general.py
+ * <b>genetic algorithm general</b>: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/genetic_alg.general.py
+ * <b>simulated annealing general</b>: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/simulated_annealing_general.py
 
 
 * Optimal Assignment Problem
