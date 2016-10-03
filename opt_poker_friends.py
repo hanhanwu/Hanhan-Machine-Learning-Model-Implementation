@@ -13,7 +13,7 @@ import simulated_annealing_general
 game_groups = ["fire", "water", "earth", "wind", "void"]
 top_choices = [
                    ("Hanhan", ("fire", "water")),
-                   ("Cherry", ("water", "void")),
+                   ("Baby_Emmanuel", ("water", "void")),
                    ("Yan", ("earth", "wind")),
                    ("Laura", ("fire", "wind")),
                    ("Big_Sea", ("void", "earth")),
