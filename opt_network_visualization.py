@@ -11,8 +11,9 @@ Here, I removed those basic ingredients such as salt, water, pepper, onion, etc.
 import random
 import genetic_alg_general
 import simulated_annealing_general
-from PIL import Image
-import ImageDraw
+import networkx as nx
+import matplotlib.pyplot as plt
+
 
 
 gourmet_lst = ["8 treasure porridge", "8 treasure rice puding", "red bean, barley rice soup", "spicy eggplant noodles",
@@ -76,23 +77,23 @@ def count_cross(v):
 
 
 def draw_solution(sol):
-    img = Image.new('RGB', (400, 400), (255, 255, 255))
-    draw = ImageDraw.Draw(img)
-    
+    G=nx.Graph()
     coord_dct = dict([(all_nodes[i], (sol[i*2], sol[i*2+1])) for i in range(len(all_nodes))])
+    
     for t in my_links:
         gourmet = t[0]
+        G.add_node(gourmet, pos=coord_dct[gourmet])
         for ingredient in t[1]:
-            draw.line((coord_dct[gourmet], coord_dct[ingredient]), fill = (255, 0, 0))
+            G.add_node(ingredient, pos=coord_dct[ingredient])
+            G.add_edge(gourmet, ingredient)
             
-    for k, v in coord_dct.items():
-        draw.text(v, k, (0,0,0))
-        
-    img.save("[your file path]draw.jpg")
+    nx.draw(G, with_labels = True)
+    plt.show()
+
 
 
 def main():
-    domain = [(10, 410)]*(len(all_nodes)*2+2)
+    domain = [(4, 10)]*(len(all_nodes)*2+2)
      
     # genetic alg 
     optimal_solution1 = genetic_alg_general.genetic_alg_general(domain, count_cross)
@@ -100,7 +101,8 @@ def main():
     draw_solution(optimal_solution1[1])
      
     # simulated annealing
-#     optimal_solution2 = simulated_annealing_general.simulated_annealing(domain, count_cross)
-#     print optimal_solution2
+    optimal_solution2 = simulated_annealing_general.simulated_annealing(domain, count_cross)
+    print optimal_solution2
+    draw_solution(optimal_solution2[0])
 if __name__ == '__main__':
     main()
