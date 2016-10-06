@@ -11,6 +11,8 @@ Here, I removed those basic ingredients such as salt, water, pepper, onion, etc.
 import random
 import genetic_alg_general
 import simulated_annealing_general
+from PIL import Image
+import ImageDraw
 
 
 gourmet_lst = ["8 treasure porridge", "8 treasure rice puding", "red bean, barley rice soup", "spicy eggplant noodles",
@@ -38,15 +40,28 @@ all_nodes = gourmet_lst
 all_nodes.extend(ingredients)
 
 
+def get_all_links():
+    all_links = []
+    for t in my_links:
+        gourmet = t[0]
+        for ingredient in t[1]:
+            all_links.append((gourmet, ingredient))
+    return all_links
+    
+
+
 # count how many 2 lines are crossing based on the coordinates of their ends
 def count_cross(v):
-    coord_dct = dict([(all_nodes[i], ((v[i], v[i*2+1]), (v[i*2], v[i+1]))) for i in range(len(all_nodes))])
+    coord_dct = dict([(all_nodes[i], (v[i*2], v[i*2+1])) for i in range(len(all_nodes))])
     ct = 0
     
-    for i in range(len(my_links)):
-        (x1, y1), (x2, y2) = coord_dct[my_links[i][0]]
-        for j in range(len(my_links[i][1])):
-            (x3, y3), (x4, y4) = coord_dct[my_links[i][1][j]]
+    all_links = get_all_links()
+    
+    # check whether current line will cross the rest lines
+    for i in range(len(all_links)):
+        (x1, y1), (x2, y2) = coord_dct[all_links[i][0]], coord_dct[all_links[i][1]]
+        for j in range(i+1, len(all_links)):
+            (x3, y3), (x4, y4) = coord_dct[all_links[j][0]], coord_dct[all_links[j][1]]
             
             den = float((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1))
             # 2 lines are parallel when den is 0
@@ -60,20 +75,32 @@ def count_cross(v):
     return ct
 
 
+def draw_solution(sol):
+    img = Image.new('RGB', (400, 400), (255, 255, 255))
+    draw = ImageDraw.Draw(img)
+    
+    coord_dct = dict([(all_nodes[i], (sol[i*2], sol[i*2+1])) for i in range(len(all_nodes))])
+    for t in my_links:
+        gourmet = t[0]
+        for ingredient in t[1]:
+            draw.line((coord_dct[gourmet], coord_dct[ingredient]), fill = (255, 0, 0))
+            
+    for k, v in coord_dct.items():
+        draw.text(v, k, (0,0,0))
+        
+    img.save("[your file path]draw.jpg")
+
 
 def main():
     domain = [(10, 410)]*(len(all_nodes)*2+2)
-    
+     
     # genetic alg 
     optimal_solution1 = genetic_alg_general.genetic_alg_general(domain, count_cross)
     print optimal_solution1
-    
+    draw_solution(optimal_solution1[1])
+     
     # simulated annealing
-    optimal_solution2 = simulated_annealing_general.simulated_annealing(domain, count_cross)
-    print optimal_solution2
-    
-    ## it seems that genetic algorithm works much better in this case
-    
-    # TO BE CONTINUED...
+#     optimal_solution2 = simulated_annealing_general.simulated_annealing(domain, count_cross)
+#     print optimal_solution2
 if __name__ == '__main__':
     main()
