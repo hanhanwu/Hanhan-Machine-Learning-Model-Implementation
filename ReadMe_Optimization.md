@@ -55,4 +55,7 @@ When the temperature decreases, the probability of accepting a worse solution is
  * A simple poker game group assignment implementation, using random search and genetic algorithm for optimization: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_poker_friends.py
  * Optimize the network visualization by reducing corssing lines: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_visualization.py
  * Simulated Annealing sample visualization [final cost as 86]: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_simulated_annealing.png
- * Simulated Annealing sample visualization [final cost as 8]: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_genetic.png
+ * Genetic Algorithm sample visualization [final cost as 8]: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_genetic.png
+ * By adding penality in the cost function based on nodes distance, I can somewhat increase the nodes distances
+ * <b>Added Penalty</b> - Genetic Algorithm sample visualization: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_genetic_penalty.png
+ * <b>Added Penalty</b> - Simulated Annealing sample visualization: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/opt_network_simulated_annealing_penalty.png
