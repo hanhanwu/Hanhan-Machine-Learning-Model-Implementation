@@ -8,11 +8,11 @@ Isn't it so fascinating that with limited ingredients, you can make tons of diff
 Here, I removed those basic ingredients such as salt, water, pepper, onion, etc.
 '''
 
-import random
 import genetic_alg_general
 import simulated_annealing_general
 import networkx as nx
 import matplotlib.pyplot as plt
+import math
 
 
 
@@ -73,6 +73,13 @@ def count_cross(v):
             
             if ua>0 and ua<1 and ub>0 and ub<1:
                 ct += 1
+            ## add penalty if the nodes are too close, here, I'm setting the smallest distance is 4177 pixel
+            nodes_dist1 = math.sqrt(pow(x1-x2, 2)+pow(y1-y2, 2))
+            nodes_dist2 = math.sqrt(pow(x1-x3, 2)+pow(y1-y3, 2))
+            nodes_dist3 = math.sqrt(pow(x1-x4, 2)+pow(y1-y4, 2))
+            nodes_dist4 = math.sqrt(pow(x2-x3, 2)+pow(y2-y3, 2))
+            nodes_dist5 = math.sqrt(pow(x2-x4, 2)+pow(y2-y4, 2))
+            ct += ((1.0-nodes_dist1/4177) + (1.0-nodes_dist2/4177) + (1.0-nodes_dist3/4177) + (1.0-nodes_dist4/4177) + (1.0-nodes_dist5/4177))/5.0
     return ct
 
 
