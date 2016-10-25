@@ -18,3 +18,6 @@ Implement different type of machine learning models to deal with practical probl
  
 4. Optimization
  * Check ReadMe_Optimization.md for all the details: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/ReadMe_Optimization.md
+ 
+5. Decision Tree
+ * Check ReadMe_DecisionTree for all the details: https://github.com/hanhanwu/Hanhan-Machine-Learning-Model-Implementation/blob/master/ReadMe_DecisionTree.md
