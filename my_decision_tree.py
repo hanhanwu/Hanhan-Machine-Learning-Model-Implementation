@@ -7,6 +7,7 @@ CART - chooses the best variable to divide up the data in each step
 In order to choose the best variable each step, the divided 2 sets should have least mixed situations
 To measure how mixed a set is, we use Gini Impurity or Entropy
 '''
+from math import log
 
 class decision_node:
     def __init__(self, col=-1, value=None, results=None, tb=None, fb=None):
@@ -51,7 +52,7 @@ def gini_impurity(rows):
         p1 = float(ct1)/total_items
         for l2, ct2 in lbs.items():
             if l1 == l2: continue
-            p2 = float(l2)/total_items
+            p2 = float(ct2)/total_items
             gi += p1*p2
             
     return gi
@@ -70,6 +71,37 @@ def entropy(rows):
         ep -= p*log2(p)
         
     return ep
+
+
+
+def main():
+    # The last column in each row is the label - what needs to be predicted
+    # I'm building a decision tree to tell how to make tasty 8 treasure porridge :)
+    ## columns meaning (left to right):
+    ## using honey or sugar, temperature, iron pot or pottery pot, 
+    ## has black bean nor not, hours for cooking, number of dates, cups of sweet rice, tasty or not
+    test_data = [
+                 ['honey', 200, 'iron', 'has black bean', 3, 7, 0.5, 'no'],
+                 ['sugar', 250, 'pottery', 'has black bean', 5, 7, 0.5, 'no'],
+                 ['honey', 300, 'pottery', 'has black bean', 5, 5, 0.5, 'yes'],
+                 ['honey', 150, 'pottery', 'has black bean', 5, 5, 0.5, 'no'],
+                 ['honey', 300, 'pottery', 'has black bean', 3, 5, 1, 'no'],
+                 ['honey', 300, 'pottery', 'no black bean', 3, 7, 0.5, 'yes'],
+                 ['sugar', 250, 'iron', 'no nlack bean', 4, 7, 0.5, 'yes'],
+                 ['sugar', 300, 'iron', 'no black bean', 5, 7, 1, 'no'],
+                 ['sugar', 300, 'pottery', 'no black bean', 5, 5, 1, 'no']
+                 ]
+    
+    print "Gini Impurity: ", gini_impurity(test_data)
+    print "Entropy: ", entropy(test_data)
+    
+    st1, st2 = divide_data(test_data, 0, 'honey')
+    print "Entropy for set1: ", entropy(st1)
+    print "Entropy for set2: ", entropy(st2)
+    
+if __name__ == "__main__":
+    main()
+        
         
     
 # TO BE CONTINUED...
