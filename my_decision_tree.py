@@ -41,7 +41,8 @@ def count_label(rows):
     return labels
 
 
-# Variable Choose Measure 1 - Gini Impurity, the probability of putting an item to the wrong set
+# Variable Choose Measure 1 - Gini Impurity, the probability of putting an item to the wrong set. 
+## 0 means the same, higher more mixed
 def gini_impurity(rows):
     lbs = count_label(rows)
     total_items = len(rows)
@@ -56,4 +57,19 @@ def gini_impurity(rows):
     return gi
         
 
-# TO BE CONTINUED....
+# Variable Choose Measure 2 - Entropy, calculate how mixed the set is/how different the outcomes are different from each other
+## 0 means the same, higher more mixed
+def entropy(rows):
+    log2 = lambda x: log(x)/log(2)
+    lbs = count_label(rows)
+    total_items = len(rows)
+    ep = 0.0
+    
+    for ct in lbs.values():
+        p = float(ct)/total_items
+        ep -= p*log2(p)
+        
+    return ep
+        
+    
+# TO BE CONTINUED...
