@@ -9,6 +9,7 @@ To measure how mixed a set is, we use Gini Impurity or Entropy
 '''
 from math import log
 
+
 class decision_node:
     def __init__(self, col=-1, value=None, results=None, tb=None, fb=None):
         self.col = col                       # column index of the criteria to be tested
@@ -78,7 +79,7 @@ def entropy(rows):
 ## then chooses the splitting criteria with the highest Information Gain
 ## Stop splitting when the Information Gain no more than 0
 def build_decision_tree(rows, scoref = entropy):
-    if len(rows) == 0: return decision_node
+    if len(rows) == 0: return decision_node()
     current_score = scoref(rows)
     
     best_gain = 0.0
@@ -96,17 +97,25 @@ def build_decision_tree(rows, scoref = entropy):
             score2 = scoref(st2)
             p = float(len(st1))/len(rows)
             information_gain = current_score - p*score1 - (1-p)*score2
-            if information_gain > best_gain:
+            if information_gain > best_gain and len(st1) > 0 and len(st2) > 0:
                 best_criteria = (col_idx, k)
                 best_sets = (st1, st2)
+                best_gain = information_gain
     
     if best_gain > 0:
-        tb = build_decision_tree(st1)
-        fb = build_decision_tree(st2)
-        return decision_node(col=best_criteria[0], value=best_criteria[1], fb=fb, tb=tb)
-    else: return decision_node(results=count_label(rows))
+        tbranch = build_decision_tree(st1)
+        fbranch = build_decision_tree(st2)
+        return decision_node(col=best_criteria[0], value=best_criteria[1], fb=fbranch, tb=tbranch)
+    else: 
+        return decision_node(results=count_label(rows))
             
 
+def print_my_tree(tree, indent=''):
+    if tree.results != None: print str(tree.results)
+    else:
+        print str(tree.col) + ':' + str(tree.value) + '?'
+        print indent + 'T -> ', print_my_tree(tree.tb, indent + ' ')
+        print indent + 'F -> ', print_my_tree(my_tree.fb, indent + ' ')
 
 
 def main():
@@ -122,7 +131,7 @@ def main():
                  ['honey', 150, 'pottery', 'has black bean', 5, 5, 0.5, 'no'],
                  ['honey', 300, 'pottery', 'has black bean', 3, 5, 1, 'no'],
                  ['honey', 300, 'pottery', 'no black bean', 3, 7, 0.5, 'yes'],
-                 ['sugar', 250, 'iron', 'no nlack bean', 4, 7, 0.5, 'yes'],
+                 ['sugar', 250, 'iron', 'no black bean', 4, 7, 0.5, 'yes'],
                  ['sugar', 300, 'iron', 'no black bean', 5, 7, 1, 'no'],
                  ['sugar', 300, 'pottery', 'no black bean', 5, 5, 1, 'no']
                  ]
@@ -135,11 +144,8 @@ def main():
     print "Entropy for set2: ", entropy(st2)
     
     my_tree = build_decision_tree(test_data)
+    print_my_tree(my_tree)
     
 if __name__ == "__main__":
     main()
-        
-# TO BE CONTINUED...        
-        
-        
         
